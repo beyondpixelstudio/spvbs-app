@@ -4,7 +4,7 @@
 
 import { readFileSync } from "fs";
 import { createClient } from "@supabase/supabase-js";
-import { PrismaClient } from "../app/generated/prisma/client.ts";
+import { PrismaClient } from "@prisma/client";
 import { config } from "dotenv";
 
 config(); // load .env

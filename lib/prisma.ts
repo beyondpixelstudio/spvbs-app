@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/app/generated/prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 // Reuse a single Prisma instance across hot-reloads in development
 // (prevents "too many connections" errors).

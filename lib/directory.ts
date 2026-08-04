@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
-import { Visibility } from "@/app/generated/prisma/enums";
+import { Visibility } from "@prisma/client";
 
 // Which member visibilities a viewer is allowed to see
 async function allowedVisibilities(): Promise<Visibility[]> {
