@@ -37,7 +37,7 @@ export default async function DocumentsPage() {
     id: m.id,
     fullName: m.fullName,
     relation: m.relation,
-    hasPassword: !!m.docsPasswordHash,
+    hasPassword: !!m.docsPasswordEnc,
     shared: m.docsSharedWhenLoggedIn,
     documents: m.privateDocuments.map((d) => ({
       id: d.id,

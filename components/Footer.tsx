@@ -51,7 +51,7 @@ export default function Footer() {
           </h4>
           <ul className="flex flex-col gap-[10px] text-[15px] text-[#cedbf5]">
             {siteConfig.contact.email && <li>{siteConfig.contact.email}</li>}
-            {siteConfig.contact.phone && <li>{siteConfig.contact.phone}</li>}
+            {siteConfig.contact.phones?.[0] && <li>{siteConfig.contact.phones[0]}</li>}
             {siteConfig.contact.address && <li>{siteConfig.contact.address}</li>}
           </ul>
         </div>

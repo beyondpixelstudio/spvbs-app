@@ -59,7 +59,6 @@ export async function approveMarriage(marriageId: string, level: "TALUKA" | "CEN
   };
   function labelFor(lvl: "TALUKA" | "CENTRAL") {
     const name = approverFamily?.familyName || ctx.user!.email || "Unknown";
-    if (ctx.isSuperAdmin && lvl === "ADMIN") return `${name} • Super Admin`;
     const a = approverAssignments.find((x) => x.level === lvl && ["PRESIDENT", "SECRETARY"].includes(x.designation));
     const desig = a ? (desigText[a.designation] || a.designation) : "Approver";
     const place = a?.taluka || approverFamily?.taluka || approverFamily?.villageTown || "";

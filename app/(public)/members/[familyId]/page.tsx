@@ -18,7 +18,9 @@ export default async function FamilyProfilePage({
   params: Promise<{ familyId: string }>;
 }) {
   const { familyId } = await params;
-  const family = await getFamilyProfile(familyId);
+  const family = await getFamilyProfile(familyId) as
+    | (Awaited<ReturnType<typeof getFamilyProfile>> & { members: any[] })
+    | null;
 
   if (!family) notFound();
 

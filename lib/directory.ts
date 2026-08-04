@@ -1,8 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { Visibility } from "@/app/generated/prisma/enums";
 
 // Which member visibilities a viewer is allowed to see
-async function allowedVisibilities(): Promise<string[]> {
+async function allowedVisibilities(): Promise<Visibility[]> {
   const user = await getCurrentUser();
   if (user) {
     // Logged-in members can see public + members-only

@@ -58,8 +58,8 @@ export default async function DirectoryPage({
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[24px]">
-            {families.map((family) => {
-              const head = family.members.find((m) => m.relation === "Head");
+            {(families as any[]).map((family) => {
+              const head = family.members.find((m: any) => m.relation === "Head");
               const memberCount = family.members.length;
               return (
                 <Link
