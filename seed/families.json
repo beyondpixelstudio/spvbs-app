@@ -1,0 +1,351 @@
+{
+  "note": "Parsed from SPVBS_Data PDF. Each family has an HOF (becomes family head account + Head member) and members[] (added under the family with their relation). Dates normalized to YYYY-MM-DD where possible; blanks left null. Taluka assumed 'Aska' for all (per data). villageTown = the person's village/town column where given.",
+  "defaultTaluka": "Aska",
+  "families": [
+    {
+      "hof": { "name": "Rayal Chidananda Achary", "qualification": "Others", "dob": "1971-09-23", "occupation": "Business", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9937915203" },
+      "members": [
+        { "name": "Late. R. Krutibas Achary", "relation": "Father", "occupation": "Goldsmith", "maritalStatus": "Married", "villageTown": "DebaBhumi" },
+        { "name": "R. Sonali Achary", "relation": "Wife", "qualification": "Others", "dob": "1980-05-26", "occupation": "House wife", "villageTown": "Buguda" },
+        { "name": "R. Sriaum Achary", "relation": "Daughter", "qualification": "MBA", "dob": "2001-08-02", "occupation": "House wife", "maritalStatus": "Married", "villageTown": "Balipadar" },
+        { "name": "R. Om Achary", "relation": "Son", "qualification": "BCom", "dob": "2004-11-08", "occupation": "Self Employed", "maritalStatus": "Unmarried", "villageTown": "Aska" }
+      ]
+    },
+    {
+      "hof": { "name": "Andumuru Purnna Ch Achary", "qualification": "Others", "dob": "1977-05-11", "occupation": "Goldsmith", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "7749982240" },
+      "members": [
+        { "name": "Late. A. Kabiraj Achary", "relation": "Father", "occupation": "Goldsmith", "villageTown": "Harida padar" },
+        { "name": "A. Sandhya Rani Achary", "relation": "Wife", "qualification": "Others", "dob": "1985-05-23", "occupation": "House wife", "villageTown": "Gahangu" },
+        { "name": "A. Subhasree Achary", "relation": "Daughter", "qualification": "HSE", "dob": "2010-09-23", "occupation": "Student", "villageTown": "Aska" },
+        { "name": "A. Chitransi Achary", "relation": "Daughter", "qualification": "Schooling", "dob": "2021-10-20", "occupation": "Student", "villageTown": "Aska" }
+      ]
+    },
+    {
+      "hof": { "name": "Simadri Suraj Ku Achary", "qualification": "Others", "dob": "1974-01-15", "occupation": "Business", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "8328891211" },
+      "members": [
+        { "name": "Late. S. Khali Achary", "relation": "Father" },
+        { "name": "S. Kanya Achary", "relation": "Wife", "qualification": "Others", "dob": "1977-07-01", "occupation": "House wife" },
+        { "name": "S. Akash Ku Achary", "relation": "Son", "qualification": "B.tech", "dob": "2000-01-18", "occupation": "self employed", "maritalStatus": "Unmarried", "villageTown": "Aska" },
+        { "name": "S. Ayush Ku Achary", "relation": "Son", "qualification": "Computer.sc.Eng", "dob": "2003-05-23", "occupation": "employed", "maritalStatus": "Unmarried", "villageTown": "Aska" }
+      ]
+    },
+    {
+      "hof": { "name": "Alusur Gouri Sankar Achary", "qualification": "Others", "dob": "1972-04-15", "occupation": "employed", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9078008056" },
+      "members": [
+        { "name": "Late. A. Krishnamurty Achary", "relation": "Father", "villageTown": "Rumagada" },
+        { "name": "A. Anita Achary", "relation": "Wife", "qualification": "Others", "dob": "1982-03-20", "occupation": "House wife", "villageTown": "Thuruburai" },
+        { "name": "A. Pratikhya Achary", "relation": "Daughter", "qualification": ".+3", "dob": "2007-09-25", "maritalStatus": "Unmarried", "villageTown": "Aska" },
+        { "name": "A. Aisha Achary", "relation": "Daughter", "qualification": "8th cnt", "dob": "2023-05-02", "maritalStatus": "Unmarried", "villageTown": "Aska" }
+      ]
+    },
+    {
+      "hof": { "name": "Vanapalli Sabita Achary", "qualification": "Others", "dob": "1993-06-07", "occupation": "House wife", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "8018488568" },
+      "members": [
+        { "name": "Late. V. Sanyasi Achary", "relation": "Husband" },
+        { "name": "V. Sibani Achary", "relation": "Daughter", "qualification": "8th cnt", "dob": "2014-05-15", "maritalStatus": "Unmarried", "villageTown": "Aska" }
+      ]
+    },
+    {
+      "hof": { "name": "Lakuju Laxmi prasad Achary", "qualification": "Others", "dob": "1977-06-09", "occupation": "Goldsmith", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9090901721" },
+      "members": [
+        { "name": "Late. L. Kasinath Achary", "relation": "Father", "qualification": "Schooling" },
+        { "name": "L. Ratnamala Achary", "relation": "Wife", "qualification": "Others", "dob": "1981-05-02", "occupation": "House wife" },
+        { "name": "L. Srinivas Achary", "relation": "Son", "qualification": ".+2 cnt", "dob": "2008-08-03" }
+      ]
+    },
+    {
+      "hof": { "name": "Palarpu Swati Achary", "qualification": "Others", "dob": "1995-07-20", "occupation": "Goldsmith", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "8093032488" },
+      "members": [
+        { "name": "P. Kisan Achary", "relation": "Husband", "qualification": "Others", "villageTown": "Bhabnipatanam" },
+        { "name": "P. Aditya Achary", "relation": "Son", "qualification": "8th", "dob": "2020-02-05" }
+      ]
+    },
+    {
+      "hof": { "name": "Andumuru Trilochan Achary", "qualification": "Others", "dob": "1971-04-10", "occupation": "Business", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9437412963" },
+      "members": [
+        { "name": "Late. A Kabiraj Achary", "relation": "Father", "villageTown": "Haridapadar" },
+        { "name": "A Rina Achary", "relation": "Wife", "qualification": "Others", "occupation": "House Wife", "maritalStatus": "Married" },
+        { "name": "A Priyanka Achary", "relation": "Daughter", "qualification": "MCA", "maritalStatus": "Unmarried" },
+        { "name": "A Jyothi Achary", "relation": "Daughter", "qualification": "MCA" }
+      ]
+    },
+    {
+      "hof": { "name": "Devu Chandrasekhar Achary", "qualification": "Others", "dob": "1980-11-01", "occupation": "GoldSmith", "villageTown": "Aska" },
+      "members": [
+        { "name": "Late. D. Lokanath Achary", "relation": "Father" },
+        { "name": "D Bhanupriya Achary", "relation": "Wife", "qualification": "Others", "dob": "1983-05-15", "occupation": "House wife" },
+        { "name": "D Parameswari Achary", "relation": "Daughter", "qualification": "12th", "dob": "2008-07-08" },
+        { "name": "D Krishnaveni Achary", "relation": "Daughter", "qualification": "10th", "dob": "2010-11-23" }
+      ]
+    },
+    {
+      "hof": { "name": "Chitimaju Sridhar Achary", "qualification": "Others", "dob": "1998-04-22", "occupation": "Goldsmith", "maritalStatus": "Unmarried", "villageTown": "Aska" },
+      "members": [
+        { "name": "Ch Srinivas Achary", "relation": "Father" },
+        { "name": "Ch. Sridevi Achary", "relation": "Mother", "qualification": "Others", "dob": "1978-04-12", "occupation": "House Wife" }
+      ]
+    },
+    {
+      "hof": { "name": "Alusuru Satyanarayan Achary", "qualification": "Others", "occupation": "Tailor", "villageTown": "Aska" },
+      "members": [
+        { "name": "A. Krishnamurty Achary", "relation": "Father" },
+        { "name": "A Nageswari Achary", "relation": "Wife", "qualification": "Others", "dob": "1968-05-12", "occupation": "Tailoring" },
+        { "name": "A Kiran Achary", "relation": "Son", "qualification": "ITI", "dob": "2003-08-06", "occupation": "Banking", "maritalStatus": "Married", "villageTown": "Aska" },
+        { "name": "V Archana Achary", "relation": "Daughter-in-Law", "qualification": "Graduation", "dob": "2004-10-22", "occupation": "House Wife", "maritalStatus": "Married", "villageTown": "Aska" },
+        { "name": "A Arun Achary", "relation": "Son", "qualification": "Graduation", "dob": "2008-09-10" },
+        { "name": "A Sruti Achary", "relation": "Daughter", "qualification": "BCA" }
+      ]
+    },
+    {
+      "hof": { "name": "Alusuru Rajendra Achary", "qualification": "Others", "dob": "1978-02-17", "occupation": "Goldsmith", "villageTown": "Aska", "mobile": "9337894451" },
+      "members": [
+        { "name": "Late. A. Krishnamurty Achary", "relation": "Father" },
+        { "name": "A Purnabasi Achary", "relation": "Wife", "qualification": "Others", "dob": "1987-01-01", "occupation": "House Wife" },
+        { "name": "A Nandini Achary", "relation": "Daughter", "qualification": "12th", "dob": "2009-01-13", "maritalStatus": "Unmarried" },
+        { "name": "A Asutosh Achary", "relation": "Son", "qualification": "5th", "dob": "2015-12-07" }
+      ]
+    },
+    {
+      "hof": { "name": "Namburu Babu Rao Achary", "dob": "1957-02-14", "occupation": "Goldsmith", "villageTown": "Aska", "mobile": "9861351327" },
+      "members": [
+        { "name": "N. Lalitadevi Achary", "relation": "Wife", "qualification": "10th", "occupation": "Housewife" },
+        { "name": "N Sidharth Achary", "relation": "Son", "qualification": "MBA", "dob": "1992-08-19", "occupation": "Sales Manager" },
+        { "name": "N Sravani Achary", "relation": "Daughter", "qualification": "Bcom", "dob": "1992-09-13" }
+      ]
+    },
+    {
+      "hof": { "name": "Rayal Sankar Achary", "qualification": "Bcom, LLB", "dob": "1968-06-20", "occupation": "Business", "villageTown": "Aska" },
+      "members": [
+        { "name": "R Lili Achary", "relation": "Wife", "qualification": "10th", "dob": "1976-07-10", "occupation": "House Wife" },
+        { "name": "R Roshan ku. Achary", "relation": "Son", "qualification": "MBA", "dob": "1999-05-02" },
+        { "name": "R Robin Kumar Achary", "relation": "Son", "qualification": "Btech", "dob": "2007-09-13" }
+      ]
+    },
+    {
+      "hof": { "name": "Srungarapu Satyam Achary", "qualification": "Others", "dob": "1970-08-01", "occupation": "Goldsmith", "villageTown": "Aska", "mobile": "9861877681" },
+      "members": [
+        { "name": "S Tara Achary", "relation": "Wife", "qualification": "Others", "dob": "1976-09-08", "occupation": "Housewife" },
+        { "name": "S Sneha Achary", "relation": "Daughter", "qualification": "Graduation", "dob": "1996-04-24", "maritalStatus": "Married" },
+        { "name": "S Soni Achary", "relation": "Daughter", "qualification": "Graduation", "dob": "1998-03-26", "maritalStatus": "Married" },
+        { "name": "S Yuvraj Achary", "relation": "Son", "qualification": "Graduation", "dob": "2008-11-01" }
+      ]
+    },
+    {
+      "hof": { "name": "Ganugala Satyanarayan Achary", "qualification": "Others", "occupation": "Goldsmith", "villageTown": "Aska" },
+      "members": [
+        { "name": "G Bijaylaxmi Achary", "relation": "Wife", "qualification": "Others", "occupation": "House Wife" },
+        { "name": "G Gouri Achary", "relation": "Daughter", "qualification": "Graduation" },
+        { "name": "G Tripati Achary", "relation": "Son" },
+        { "name": "G Tirumala Achary", "relation": "Son" }
+      ]
+    },
+    {
+      "hof": { "name": "G Jaganayakulu Achary", "qualification": "Others", "maritalStatus": "Married", "villageTown": "Aska" },
+      "members": [
+        { "name": "G Rani Achary", "relation": "Wife", "qualification": "Others", "maritalStatus": "Married" },
+        { "name": "G Shneha Achary", "relation": "Daughter" }
+      ]
+    },
+    {
+      "hof": { "name": "G Ganeshrao Achary", "qualification": "Others", "villageTown": "Aska" },
+      "members": [
+        { "name": "G Panakaja Achary", "relation": "Wife", "qualification": "Others" },
+        { "name": "G Neha Achary", "relation": "Daughter" }
+      ]
+    },
+    {
+      "hof": { "name": "G Prasad Achary", "qualification": "Others", "villageTown": "Aska" },
+      "members": [
+        { "name": "G Anita Achary", "relation": "Wife", "qualification": "Others" },
+        { "name": "G Aditya prashad Achary", "relation": "Son" },
+        { "name": "G Priyansu Achary", "relation": "Son" }
+      ]
+    },
+    {
+      "hof": { "name": "G Devraj Achary", "qualification": "Others", "villageTown": "Aska" },
+      "members": [
+        { "name": "G Jyoti achary", "relation": "Wife", "qualification": "Others" },
+        { "name": "G Rajalaxmi Achary", "relation": "Daughter" }
+      ]
+    },
+    {
+      "hof": { "name": "Rayla Rakesh Achary", "qualification": "Others", "dob": "1992-03-05", "occupation": "Business", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9938250879" },
+      "members": [
+        { "name": "Late. R Krutibas Achary", "relation": "Father", "qualification": "Others" },
+        { "name": "R Sujata Achary", "relation": "Wife", "qualification": "10th", "dob": "1999-03-05", "occupation": "House Wife", "maritalStatus": "Married" },
+        { "name": "R Soudaryia Achary", "relation": "Daughter", "qualification": "Schooling", "dob": "2018-09-18" },
+        { "name": "R Laxmipriya Achary", "relation": "Daughter" }
+      ]
+    },
+    {
+      "hof": { "name": "T Mohan rao Achary", "qualification": "Others", "dob": "1972-07-18", "occupation": "Business", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9778445587" },
+      "members": [
+        { "name": "Late. Raghunath Achary", "relation": "Father" },
+        { "name": "T Arti Achary", "relation": "Wife", "qualification": "Others", "dob": "1986-07-18", "occupation": "house Wife", "maritalStatus": "Married" },
+        { "name": "T Priyanka Achary", "relation": "Daughter", "qualification": "HSE", "maritalStatus": "Married" },
+        { "name": "T Rahual Achary", "relation": "Son", "qualification": "HSE", "dob": "2008-08-13", "maritalStatus": "Unmarried" }
+      ]
+    },
+    {
+      "hof": { "name": "S Giriahu Achary", "qualification": "Others", "dob": "1982-05-22", "occupation": "goldsmith", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "6372123225" },
+      "members": [
+        { "name": "Late. S Kondababu Achary", "relation": "Father" },
+        { "name": "S Laxmi Achary", "relation": "Wife", "qualification": "Others", "dob": "1994-03-12", "occupation": "house wife", "maritalStatus": "Married" },
+        { "name": "S Alekya Achary", "relation": "Daughter", "qualification": "Schooling", "dob": "2015-02-21", "maritalStatus": "Unmarried" },
+        { "name": "S Nityashree Achary", "relation": "Daughter", "qualification": "Schooling", "dob": "2020-07-02", "maritalStatus": "Unmarried" }
+      ]
+    },
+    {
+      "hof": { "name": "T Haribabu Achary", "qualification": "Others", "dob": "1971-06-01", "occupation": "Goldsmith", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9090601305" },
+      "members": [
+        { "name": "Late. T Venkata Rao Achary", "relation": "Father" },
+        { "name": "T Kalavati Achary", "relation": "Wife", "qualification": "Others", "dob": "1976-11-13", "occupation": "House wife", "maritalStatus": "Married" },
+        { "name": "T Mounika Achary", "relation": "Daughter", "qualification": "MSc", "dob": "2003-07-04", "maritalStatus": "Unmarried" },
+        { "name": "T Ravitaja Achary", "relation": "Son", "qualification": "Btech", "dob": "2005-01-05", "maritalStatus": "Unmarried" }
+      ]
+    },
+    {
+      "hof": { "name": "K Shiva Narayana Achary", "qualification": "Others", "dob": "1985-05-21", "occupation": "Employ", "villageTown": "Aska" },
+      "members": [
+        { "name": "Late. K Satyanadam Achary", "relation": "Father" },
+        { "name": "K Kalyani Achary", "relation": "Wife", "qualification": "Others", "dob": "1990-06-29", "occupation": "House wife" },
+        { "name": "K Ritya Achary", "relation": "Daughter", "qualification": "Schooling" },
+        { "name": "K Prasanti Achary", "relation": "Sister" },
+        { "name": "K Tejaswani Rao Achary", "relation": "Brother", "qualification": "MCom", "dob": "1991-06-24", "occupation": "Business", "maritalStatus": "Married", "villageTown": "Aska" },
+        { "name": "K Roja Achary", "relation": "Sister-in-law", "qualification": "HSE", "dob": "1998-01-24", "occupation": "House wife" },
+        { "name": "K Radha Krishna Achary", "relation": "Nephew", "dob": "2023-09-01" },
+        { "name": "K Himavati Achary", "relation": "Grandmother" }
+      ]
+    },
+    {
+      "hof": { "name": "V Bhaskar Achary", "qualification": "Others", "dob": "1975-06-18", "occupation": "Business", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9777456308" },
+      "members": [
+        { "name": "Late. V Ramurty Achary", "relation": "Father", "qualification": "Others" },
+        { "name": "V Arti Achary", "relation": "Wife", "qualification": "HSE", "occupation": "house wife" },
+        { "name": "V Archana Achary", "relation": "Daughter", "maritalStatus": "Married" },
+        { "name": "V Amrita Achary", "relation": "Daughter", "qualification": "Bsc", "dob": "2009-05-18" },
+        { "name": "V Venkataratnam Achary", "relation": "Son", "qualification": "Schooling", "dob": "2015-07-07" }
+      ]
+    },
+    {
+      "hof": { "name": "V Srinavas Achary", "qualification": "Others", "dob": "1979-06-17", "occupation": "Business", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9861190433" },
+      "members": [
+        { "name": "V Sabita Achary", "relation": "Wife", "qualification": "Others", "dob": "1992-09-11", "occupation": "house wife" },
+        { "name": "V Sidhishree Achary", "relation": "Daughter", "qualification": "Schooling", "dob": "2014-03-20" },
+        { "name": "V Ramaswarup Achary", "relation": "Son", "qualification": "Schooling", "dob": "2018-05-19" }
+      ]
+    },
+    {
+      "hof": { "name": "K Srinavas Achary", "qualification": "Others", "dob": "1968-11-15", "occupation": "Business", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9348498740" },
+      "members": [
+        { "name": "Late. K Prasad Rao Achary", "relation": "Father" },
+        { "name": "K Mallesawari Achary", "relation": "Wife", "qualification": "Others", "dob": "1974-02-15", "occupation": "House wife" },
+        { "name": "K Supriya Achary", "relation": "Daughter", "qualification": "PG", "dob": "2002-09-05", "occupation": "Lecture", "maritalStatus": "Unmarried", "villageTown": "Aska" },
+        { "name": "K Jayasada Achary", "relation": "Mother", "dob": "1948-08-15", "occupation": "House wife" }
+      ]
+    },
+    {
+      "hof": { "name": "N Srinivas Achary", "qualification": "Others", "dob": "1972-06-05", "occupation": "Goldsmith", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9040606429" },
+      "members": [
+        { "name": "Late. N Chelapati Achary", "relation": "Father" },
+        { "name": "N Suajata Achary", "relation": "Wife", "qualification": "Others", "dob": "1981-04-15", "occupation": "House Wife" },
+        { "name": "N Sachin Achary", "relation": "Son", "qualification": "BA", "dob": "2005-06-10" },
+        { "name": "N Sarojani Achary", "relation": "Mother" },
+        { "name": "N Kumari Achary", "relation": "Daughter", "dob": "1970-04-11", "maritalStatus": "Married" },
+        { "name": "N Usha Achary", "relation": "Daughter" }
+      ]
+    },
+    {
+      "hof": { "name": "Y Giribabu Achary", "qualification": "Others", "dob": "1984-02-02", "occupation": "Hotel Buiness", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9861619615" },
+      "members": [
+        { "name": "Late. Y Devraju Achary", "relation": "Father" },
+        { "name": "Y Kovita Achary", "relation": "Wife", "qualification": "Others", "dob": "1993-06-27", "occupation": "house wife" },
+        { "name": "Y Srivalli Achary", "relation": "Daughter", "qualification": "Schooling", "dob": "2015-06-08" },
+        { "name": "Y Meghana Achary", "relation": "Daughter", "qualification": "Schooling", "dob": "2021-05-20" }
+      ]
+    },
+    {
+      "hof": { "name": "A Ganesh Achary", "qualification": "Schooling", "occupation": "Goldsmith", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9090440093" },
+      "members": [
+        { "name": "Late. A Laxmi Narayani Achary", "relation": "Father" },
+        { "name": "A Srinivas Achary", "relation": "Son", "qualification": "Schooling" }
+      ]
+    },
+    {
+      "hof": { "name": "B Tumbuswa Achary", "qualification": "Others", "dob": "1960-04-20", "occupation": "Goldsmith", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9348828917" },
+      "members": [
+        { "name": "Late. B Suribabu Achary", "relation": "Father" },
+        { "name": "B Damayanti Achary", "relation": "Wife", "qualification": "Others", "dob": "1968-06-25", "occupation": "House wife" },
+        { "name": "B Srinivas Achary", "relation": "Son", "qualification": "Schooling", "dob": "1986-05-12", "occupation": "Goldsmith" },
+        { "name": "B Laxmi Achary", "relation": "Daughter", "qualification": "Schooling" }
+      ]
+    },
+    {
+      "hof": { "name": "Kushadharma Sibaji Achary", "qualification": "Others", "dob": "1969-04-10", "occupation": "Business", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9861279710" },
+      "members": [
+        { "name": "Late. K Lamadar Achary", "relation": "Father" },
+        { "name": "K Rajalxmi Achary", "relation": "Wife", "qualification": "Others", "occupation": "House wife" },
+        { "name": "K Subham Achary", "relation": "Son", "qualification": "Diploma", "dob": "2002-02-02", "maritalStatus": "Unmarried" },
+        { "name": "K Rabindra Achary", "relation": "Son" }
+      ]
+    },
+    {
+      "hof": { "name": "Nalabandu. Abbai Achary", "qualification": "Others", "dob": "1958-02-04", "occupation": "Goldsmith", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "7653933230" },
+      "members": [
+        { "name": "Late. N Paidiraju Achary", "relation": "Father" },
+        { "name": "N Ratnam Achary", "relation": "Wife", "qualification": "Others", "occupation": "House wife" },
+        { "name": "N Gurunatham Achary", "relation": "Son", "qualification": "10th", "occupation": "Goldsmith" }
+      ]
+    },
+    {
+      "hof": { "name": "K Suryanarayan Achary", "qualification": "Others", "dob": "1980-06-02", "occupation": "School Teacher", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9778129476" },
+      "members": [
+        { "name": "K Jyoti Laxmi Achary", "relation": "Wife", "qualification": "Others", "dob": "1992-05-04", "occupation": "House Wife" },
+        { "name": "K Sivaram Achary", "relation": "Son", "qualification": "10th", "dob": "2010-12-16" },
+        { "name": "K Saktiprasad Achary", "relation": "Son", "qualification": "Schooling", "dob": "2015-11-20" }
+      ]
+    },
+    {
+      "hof": { "name": "K Rajeswar Rao Achary", "qualification": "Others", "dob": "1984-11-19", "villageTown": "Aska", "mobile": "8093148599" },
+      "members": [
+        { "name": "Late. Sanmukham Achary", "relation": "Father" },
+        { "name": "K Hindumati Achary", "relation": "Mother", "occupation": "house wife" }
+      ]
+    },
+    {
+      "hof": { "name": "Alusuru. Gourisankar Achary", "qualification": "Others", "dob": "1972-04-15", "occupation": "self employ", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9078008056" },
+      "members": [
+        { "name": "Late. A Krishnamurty Achary", "relation": "Father", "qualification": "Others", "occupation": "Goldsmith", "villageTown": "Rumagada" },
+        { "name": "A Anita Achary", "relation": "Wife", "qualification": "Others", "dob": "1982-03-20", "occupation": "house wife", "villageTown": "Thuruburi" },
+        { "name": "A Pratikshya Achary", "relation": "Daughter", "qualification": "BA", "dob": "2007-09-25" },
+        { "name": "A Aisha Achary", "relation": "Daughter", "qualification": "Schooling", "dob": "2013-04-29" }
+      ]
+    },
+    {
+      "hof": { "name": "Kushadharma. Durga Prasad Acharya", "dob": "1965-12-15", "occupation": "Lecture", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "6371633602" },
+      "members": [
+        { "name": "K. Renumala Achary", "relation": "Wife", "occupation": "Housewife", "villageTown": "Aska" },
+        { "name": "K. Lambodara Achary", "relation": "Father" },
+        { "name": "K. Rushali Achary", "relation": "Daughter", "qualification": "MA", "dob": "1997-10-28", "occupation": "Executive Officer Airport", "maritalStatus": "Unmarried" },
+        { "name": "K. Soumyasubhankar Achary", "relation": "Son", "qualification": "B.tech", "dob": "2005-10-26", "maritalStatus": "Unmarried" }
+      ]
+    },
+    {
+      "hof": { "name": "G. Debraj Achary", "qualification": "Others", "dob": "1969-08-25", "occupation": "self employed", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "9861256942" },
+      "members": [
+        { "name": "G. Jyoti Achary", "relation": "Wife", "qualification": "Others", "dob": "1981-08-01", "occupation": "house wife", "villageTown": "Odasingh" },
+        { "name": "G. Rajlaxmi Achary", "relation": "Daughter", "qualification": "BA", "dob": "2008-08-06", "occupation": "student", "maritalStatus": "Unmarried", "villageTown": "Aska" }
+      ]
+    },
+    {
+      "hof": { "name": "Komuju. Jwala Prasad Acharya", "qualification": "BA", "dob": "1974-01-10", "occupation": "Director, PICM", "maritalStatus": "Married", "villageTown": "Aska", "mobile": "7008341570" },
+      "members": [
+        { "name": "Late. Sri. Kasinath Acharya", "relation": "Father", "qualification": "Acharjya", "dob": "1938-04-01", "occupation": "Sanskrit Teacher", "villageTown": "Gahangu" },
+        { "name": "K. Sabitri Achary", "relation": "Mother", "qualification": "Schooling", "dob": "1952-07-12", "occupation": "Housewife", "villageTown": "Haridapadar" },
+        { "name": "K. Krishnabeni Achary", "relation": "Wife", "qualification": "HSE", "dob": "1976-10-23", "occupation": "Housewife", "villageTown": "Saroda" },
+        { "name": "Dhayanchand Acharya", "relation": "Son", "qualification": "M.Tech", "dob": "2000-12-09", "occupation": "Software Engineer", "maritalStatus": "Unmarried", "villageTown": "BBSR" },
+        { "name": "Pragnyanchand Acharya", "relation": "Son", "qualification": "Schooling", "dob": "2011-03-27", "occupation": "study continue", "villageTown": "Aska" }
+      ]
+    }
+  ]
+}

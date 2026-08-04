@@ -1,0 +1,448 @@
+// SPVBS.in - Database Schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== ENUMS ====================
+
+enum UserRole {
+  SUPER_ADMIN
+  TALUKA_ADMIN
+  FAMILY_HEAD
+  MEMBER
+  GUEST
+}
+
+enum UserStatus {
+  PENDING
+  APPROVED
+  SUSPENDED
+}
+
+enum Visibility {
+  PUBLIC
+  MEMBERS_ONLY
+  HIDDEN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum MaritalStatus {
+  MARRIED
+  UNMARRIED
+  WIDOWED
+  DIVORCED
+}
+
+enum CurrentStatus {
+  STUDYING
+  EMPLOYED
+  HOMEMAKER
+  RETIRED
+  UNEMPLOYED
+}
+
+enum MatrimonialPrivacyMode {
+  BLURRED
+  ADMIN_MEDIATED
+  OPEN
+}
+
+enum MatrimonialStatus {
+  ACTIVE
+  MATCHED
+  INACTIVE
+}
+
+enum InterestStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+enum RsvpStatus {
+  GOING
+  MAYBE
+  NOT_GOING
+}
+
+enum CampaignStatus {
+  ACTIVE
+  CLOSED
+}
+
+enum GrievanceStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  WITHDRAWN
+  APPEALED
+  CLOSED
+}
+
+enum GrievanceCategory {
+  COMMITTEE
+  MEMBER
+  EVENT
+  FINANCIAL
+  SUGGESTION
+  OTHER
+}
+
+enum BroadcastChannel {
+  IN_APP
+  EMAIL
+  SMS
+}
+
+enum BroadcastScope {
+  ALL
+  TALUKA
+  FAMILY
+}
+
+// ==================== CORE ====================
+
+model User {
+  id           String     @id @default(cuid())
+  email        String?    @unique
+  phone        String?    @unique
+  passwordHash String?
+  committeeAssignments CommitteeAssignment[]
+  marriageSubmissions MarriagePermission[] @relation("MarriageSubmitter")
+  role         UserRole
+  status       UserStatus @default(PENDING)
+  languagePref String     @default("en")
+  createdAt    DateTime   @default(now())
+
+  familyUnit         FamilyUnit? @relation("FamilyHeadUser")
+  createdEvents      Event[]     @relation("EventCreatedBy")
+  uploadedGalleries  GalleryAlbum[] @relation("GalleryUploadedBy")
+  sentBroadcasts     Broadcast[] @relation("BroadcastSentBy")
+}
+
+model FamilyUnit {
+  id                  String   @id @default(cuid())
+  familyName          String
+  familyHeadUserId    String   @unique
+  familyHeadUser      User     @relation("FamilyHeadUser", fields: [familyHeadUserId], references: [id])
+  taluka              String
+  villageTown         String
+  declarationAccepted Boolean  @default(false)
+  createdAt           DateTime @default(now())
+
+  members FamilyMember[]
+}
+
+model FamilyMember {
+  id                   String        @id @default(cuid())
+  familyUnitId         String
+  familyUnit           FamilyUnit    @relation(fields: [familyUnitId], references: [id])
+  relation             String        // e.g. "Head", "Spouse", "Son", "Daughter", "Father", "Other"
+  fullName             String
+  gender               Gender?
+  dob                  DateTime?
+  maritalStatus        MaritalStatus?
+  qualification        String?
+  occupation           String?
+  mobileNumber         String?
+  bloodGroup           String?
+  currentStatus        CurrentStatus?
+  villageTown          String?
+  visibility           Visibility    @default(MEMBERS_ONLY)
+  photoUrl             String?
+  isMatrimonialEligible Boolean      @default(false)
+  createdAt            DateTime      @default(now())
+
+  janamKundli          JanamKundli?
+  privateDocuments      PrivateDocument[]
+  docsPasswordEnc      String?
+  docsSharedWhenLoggedIn Boolean @default(false)
+  matrimonialProfile    MatrimonialProfile?
+  eventRsvps            EventRSVP[]
+  donations              Donation[]
+  grievances             Grievance[]
+  membershipCard         MembershipCard?
+}
+
+// ==================== PRIVACY-SENSITIVE ====================
+
+model JanamKundli {
+  id                  String     @id @default(cuid())
+  familyMemberId      String     @unique
+  familyMember        FamilyMember @relation(fields: [familyMemberId], references: [id])
+  birthDate           DateTime?
+  birthTime           String?
+  birthPlace          String?
+  chartData           Json?
+  visibility          Visibility @default(HIDDEN)
+  accessRestrictions  Json?
+}
+
+model PrivateDocument {
+  id                    String   @id @default(cuid())
+  familyMemberId        String
+  familyMember          FamilyMember @relation(fields: [familyMemberId], references: [id], onDelete: Cascade)
+  docType               String
+  fileName              String
+  filePath              String
+  createdAt             DateTime @default(now())
+}
+
+// ==================== MATRIMONIAL ====================
+
+model MatrimonialProfile {
+  id             String   @id @default(cuid())
+  familyMemberId String   @unique
+  familyMember   FamilyMember @relation(fields: [familyMemberId], references: [id])
+  privacyMode    MatrimonialPrivacyMode @default(BLURRED)
+  bio            String?
+  preferences    Json?
+  status         MatrimonialStatus @default(ACTIVE)
+  verifiedBadge  Boolean  @default(false)
+
+  interestsSent     MatrimonialInterest[] @relation("InterestFrom")
+  interestsReceived MatrimonialInterest[] @relation("InterestTo")
+}
+
+model MatrimonialInterest {
+  id             String   @id @default(cuid())
+  fromProfileId  String
+  fromProfile    MatrimonialProfile @relation("InterestFrom", fields: [fromProfileId], references: [id])
+  toProfileId    String
+  toProfile      MatrimonialProfile @relation("InterestTo", fields: [toProfileId], references: [id])
+  status         InterestStatus @default(PENDING)
+  createdAt      DateTime @default(now())
+}
+
+// ==================== EVENTS ====================
+
+model Event {
+  id            String   @id @default(cuid())
+  title         String
+  description   String?
+  dateTime      DateTime
+  location      String?
+  taluka        String?
+  rsvpCapacity  Int?
+  createdByAdminId String
+  createdByAdmin   User @relation("EventCreatedBy", fields: [createdByAdminId], references: [id])
+
+  rsvps    EventRSVP[]
+  gallery  GalleryAlbum?
+}
+
+model EventRSVP {
+  id            String     @id @default(cuid())
+  eventId       String
+  event         Event      @relation(fields: [eventId], references: [id])
+  memberId      String
+  member        FamilyMember @relation(fields: [memberId], references: [id])
+  status        RsvpStatus @default(GOING)
+  checkedIn     Boolean    @default(false)
+
+  @@unique([eventId, memberId])
+}
+
+model GalleryAlbum {
+  id                String   @id @default(cuid())
+  eventId           String   @unique
+  event             Event    @relation(fields: [eventId], references: [id])
+  photoUrls         String[]
+  uploadedByAdminId String
+  uploadedByAdmin   User     @relation("GalleryUploadedBy", fields: [uploadedByAdminId], references: [id])
+}
+
+// ==================== DONATIONS ====================
+
+model Campaign {
+  id                    String   @id @default(cuid())
+  title                 String
+  goalAmount            Decimal  @db.Decimal(12, 2)
+  raisedAmount          Decimal  @default(0) @db.Decimal(12, 2)
+  utilizationReceipts   String[]
+  status                CampaignStatus @default(ACTIVE)
+
+  donations Donation[]
+}
+
+model Donation {
+  id              String   @id @default(cuid())
+  donorMemberId   String?
+  donorMember     FamilyMember? @relation(fields: [donorMemberId], references: [id])
+  campaignId      String
+  campaign        Campaign @relation(fields: [campaignId], references: [id])
+  amount          Decimal  @db.Decimal(12, 2)
+  paymentRef      String?
+  isDonorNamed    Boolean  @default(false)
+  createdAt       DateTime @default(now())
+}
+
+// ==================== GRIEVANCE ====================
+
+model Grievance {
+  id                  String   @id @default(cuid())
+  submittedByMemberId String?
+  submittedByMember   FamilyMember? @relation(fields: [submittedByMemberId], references: [id])
+  subject             String
+  description         String
+  category            GrievanceCategory @default(OTHER)
+  againstWhom         String?
+  status              GrievanceStatus @default(OPEN)
+  adminNotes          String?
+  createdAt           DateTime @default(now())
+
+  comments            GrievanceComment[]
+}
+
+model GrievanceComment {
+  id           String   @id @default(cuid())
+  grievanceId  String
+  grievance    Grievance @relation(fields: [grievanceId], references: [id], onDelete: Cascade)
+  authorUserId String
+  authorRole   String   // "MEMBER" or "ADMIN" (who wrote it)
+  body         String
+  attachmentUrl String?
+  createdAt    DateTime @default(now())
+}
+
+// ==================== MEMBERSHIP CARD ====================
+
+model MembershipCard {
+  id             String   @id @default(cuid())
+  familyMemberId String   @unique
+  familyMember   FamilyMember @relation(fields: [familyMemberId], references: [id])
+  qrCodeToken    String   @unique
+  issuedAt       DateTime @default(now())
+  pdfUrl         String?
+}
+
+// ==================== COMMUNICATION ====================
+
+model Broadcast {
+  id            String   @id @default(cuid())
+  sentByAdminId String
+  sentByAdmin   User     @relation("BroadcastSentBy", fields: [sentByAdminId], references: [id])
+  title         String
+  body          String
+  channel       BroadcastChannel
+  targetScope   BroadcastScope
+  createdAt     DateTime @default(now())
+}
+
+
+model CommitteeAssignment {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  level        CommitteeLevel
+  type         CommitteeType
+  designation  CommitteeDesignation @default(MEMBER)
+  taluka       String?  // for TALUKA level, which taluka they serve
+  createdAt    DateTime @default(now())
+}
+
+enum CommitteeLevel {
+  TALUKA
+  CENTRAL
+}
+
+enum CommitteeType {
+  ADVISOR
+  CORE
+  FINANCE
+  MANDIR_PARICHALANA
+  YOUTH_CELL
+}
+
+enum CommitteeDesignation {
+  PRESIDENT
+  SECRETARY
+  JOINT_SECRETARY
+  CASHIER
+  MEMBER
+}
+
+
+model MarriagePermission {
+  id                String   @id @default(cuid())
+  submittedByUserId String
+  submittedBy       User     @relation("MarriageSubmitter", fields: [submittedByUserId], references: [id])
+
+  // Groom (Bar) side
+  groomName         String
+  groomFather       String?
+  groomAge          String?
+  groomEducation    String?
+  groomVillage      String?
+  groomPosa         String?
+  groomBhaya        String?
+  groomDistrict     String?
+  groomPhone        String?
+  groomPhotoPath    String?
+
+  // Bride (Kanya) side
+  brideName         String
+  brideFather       String?
+  brideAge          String?
+  brideEducation    String?
+  brideVillage      String?
+  bridePosa         String?
+  brideBhaya        String?
+  brideDistrict     String?
+  bridePhone        String?
+  bridePhotoPath    String?
+
+  marriageDate      String?
+  taluka            String?
+  declaration       String?
+
+  // Witnesses: JSON array [{name, signaturePath}] — 3 per side
+  groomWitnesses    Json?
+  brideWitnesses    Json?
+
+  // Parallel approvals — all three needed for final approval
+  talukaApproved    Boolean  @default(false)
+  talukaApprovedBy  String?
+  centralApproved   Boolean  @default(false)
+  centralApprovedBy String?
+  adminApproved     Boolean  @default(false)
+  adminApprovedBy   String?
+
+  status            MarriageStatus @default(PENDING)
+  rejectionReason   String?
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+enum MarriageStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?
+  phone     String?
+  taluka    String?
+  village   String?
+  subject   String?
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
