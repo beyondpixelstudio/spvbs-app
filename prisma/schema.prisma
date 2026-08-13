@@ -125,6 +125,8 @@ model User {
   status       UserStatus @default(PENDING)
   languagePref String     @default("en")
   createdAt    DateTime   @default(now())
+  profilePictureUrl String?
+
 
   familyUnit         FamilyUnit? @relation("FamilyHeadUser")
   createdEvents      Event[]     @relation("EventCreatedBy")

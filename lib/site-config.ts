@@ -49,7 +49,6 @@ export const siteConfig = {
 
 // Official taluka list for the samaj (used in dropdowns/filters everywhere)
 export const TALUKAS = [
-  "Aska",
   "Athagada",
   "Badagada",
   "Badakhemundi",

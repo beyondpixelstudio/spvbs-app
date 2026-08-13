@@ -50,38 +50,101 @@ const features = [
 export default function HomePage() {
   return (
     <main>
-      {/* ===== HERO ===== */}
-      <section className="relative overflow-hidden">
-        <div className="max-w-[1200px] mx-auto px-[20px] pt-[90px] pb-[120px] text-center">
-          <div className="flex justify-center mb-[24px]">
-            <div className="w-[110px] h-[110px] rounded-full bg-[var(--color-bg-secondary)] flex items-center justify-center p-[14px]">
+      {/* ===== HERO (Vishwakarma) ===== */}
+      <section className="relative overflow-hidden min-h-[600px] flex items-center">
+        <img
+          src="/ChatGPT-Image-Jun-3-2026-11_14_49-PM.png"
+          alt="Lord Vishwakarma"
+          className="absolute inset-0 w-full h-full object-cover object-right"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-bg-secondary)] via-[var(--color-bg-secondary)]/80 to-transparent" />
+        <div className="relative max-w-[1200px] mx-auto px-[20px] py-[100px] w-full">
+          <div className="max-w-[480px]">
+            <h1 className="!text-[34px] sm:!text-[48px] !leading-[1.2] !text-white">
+              {siteConfig.name}
+            </h1>
+            <p className="text-[18px] text-[#e8eefb] mt-[24px] leading-relaxed">
+              Carrying forward the divine legacy of Lord Vishwakarma&apos;s five sons, we embody a rich
+              heritage of creation rooted in the Vedas. United under the philosophy of &quot;Vasudhaiva Kutumbakam.&quot;
+            </p>
+            <div className="flex flex-wrap items-center gap-[16px] mt-[36px]">
+              <Button href="/about" variant="primary">Know More</Button>
+              <Button href="/members" variant="outline">Explore Members</Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== ABOUT ===== */}
+      <section className="max-w-[1200px] mx-auto px-[20px] py-[90px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[60px] items-center">
+          <div className="order-1 lg:order-1">
+            <h2 className="!text-[26px] sm:!text-[30px] text-[var(--color-bg-secondary)] uppercase !leading-[1.3]">
+              {siteConfig.name}
+            </h2>
+            <p className="text-[16px] text-[var(--color-text)] mt-[24px] leading-[1.8] text-justify">
+              Saiba Panchal Viswa Brahman Community is a culturally rooted community guided by the sacred values and teachings of Rishi Parampara. Our foundation is built on preserving traditions, promoting social responsibility, and strengthening the spiritual and cultural identity of our families and future generations.
+            </p>
+            <p className="text-[16px] text-[var(--color-text)] mt-[16px] leading-[1.8] text-justify">
+              We actively engage in various social welfare initiatives that contribute to the betterment of society and community life. Our key activities includes:
+            </p>
+            <div className="flex flex-col gap-[12px] mt-[24px]">
+              {[
+                "Plantation and environmental awareness to support nature and ecological balance",
+                "Women empowerment through encouragement, participation, and social upliftment",
+                "Promotion and preservation of Shodasha Sanskara, the sixteen sacred rites that guide human life according to our traditions",
+                "Encouraging and supporting children's education to build a knowledgeable and responsible future generation",
+                "Upholding Jangyapabita Sanskar (Yajnopavita/Upanayana Sanskar) as an essential and inseparable part of our cultural and spiritual heritage",
+              ].map((text, i) => (
+                <div key={i} className="flex items-start gap-[12px]">
+                  <span className="w-[7px] h-[7px] rounded-full bg-[var(--color-primary)] shrink-0 mt-[9px]" />
+                  <p className="text-[15px] text-[var(--color-text)] leading-[1.5] text-justify">{text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="order-2 lg:order-2 flex justify-center">
+            <div className="w-full max-w-[420px] aspect-square rounded-full bg-[var(--color-bg-secondary)] flex items-center justify-center p-[50px]" style={{ boxShadow: "rgba(40, 63, 116, 0.15) 0px 10px 40px 0px" }}>
               <img src="/logo.png" alt={siteConfig.shortName + " logo"} className="w-full h-full object-contain" />
             </div>
           </div>
-          <span className="inline-block text-[14px] tracking-[2px] uppercase text-[var(--color-primary)] mb-[20px]">
-            {siteConfig.contact.address} • Est. Community
-          </span>
-          <h1 className="!text-[40px] sm:!text-[56px] !leading-[1.15] max-w-[900px] mx-auto text-[var(--color-bg-secondary)]">
-            {siteConfig.name}
-          </h1>
-          <p className="text-[20px] text-[var(--color-text)] mt-[24px] max-w-[600px] mx-auto">
-            {siteConfig.tagline} — {siteConfig.description}
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-[16px] mt-[40px]">
-            <Button href="/register" variant="primary">Register Your Family</Button>
-            <Button href="/members" variant="outline">Explore Members</Button>
+        </div>
+      </section>
+
+      {/* ===== SAMAJ KALYAN ===== */}
+      <section className="max-w-[1200px] mx-auto px-[20px] py-[90px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[60px] items-center">
+          <div className="flex justify-center">
+            <div className="w-full max-w-[420px] aspect-square rounded-full overflow-hidden border-[6px] border-white" style={{ boxShadow: "rgba(40, 63, 116, 0.15) 0px 10px 40px 0px" }}>
+              <img
+                src="/ChatGPT-Image-Jun-3-2026-11_46_53-PM-1024x1024.png"
+                alt="Veer Brahmendra Swami"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+          <div>
+            <h2 className="!text-[30px] sm:!text-[36px] text-[var(--color-bg-secondary)] !leading-[1.2]">
+              SAMAJ<br />KALYAN
+            </h2>
+            <p className="text-[16px] text-[var(--color-text)] mt-[24px] leading-[1.8] max-w-[520px]">
+              Dedicated to the upliftment and well-being of our community, the Viswa Brahmin Samaj actively
+              drives essential welfare initiatives. Through collective support, we aim to empower families,
+              assist those in need, and foster a stronger, more resilient society. We invite our members to
+              collaborate with local committees to create lasting social impact.
+            </p>
+            <div className="flex flex-wrap gap-[30px] mt-[36px]">
+              <div className="flex items-center gap-[14px]">
+                <div className="w-[56px] h-[56px] rounded-full bg-[#cedbf5] flex items-center justify-center text-[24px] shrink-0">👨‍👩‍👧</div>
+                <span className="text-[17px] font-medium text-[var(--color-bg-secondary)]">Family<br />Support</span>
+              </div>
+              <div className="flex items-center gap-[14px]">
+                <div className="w-[56px] h-[56px] rounded-full bg-[#fdf1e0] flex items-center justify-center text-[24px] shrink-0">💧</div>
+                <span className="text-[17px] font-medium text-[var(--color-bg-secondary)]">Community<br />Welfare</span>
+              </div>
+            </div>
           </div>
         </div>
-
-        {/* Decorative rounded shape */}
-        <div
-          className="absolute -top-[120px] -right-[120px] w-[400px] h-[400px] rounded-full opacity-[0.06]"
-          style={{ background: "var(--color-primary)" }}
-        />
-        <div
-          className="absolute -bottom-[100px] -left-[100px] w-[300px] h-[300px] rounded-full opacity-[0.05]"
-          style={{ background: "var(--color-secondary)" }}
-        />
       </section>
 
       {/* ===== STATS ===== */}

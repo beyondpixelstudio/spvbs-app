@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { siteConfig } from "@/lib/site-config";
-
 export default function Footer() {
   return (
     <footer className="bg-[var(--color-bg-secondary)] text-white mt-auto">
@@ -24,7 +23,6 @@ export default function Footer() {
             {siteConfig.description}
           </p>
         </div>
-
         {/* Quick links */}
         <div>
           <h4 className="!text-white !text-[18px] mb-[16px] font-[family-name:var(--font-heading)]">
@@ -43,7 +41,6 @@ export default function Footer() {
             ))}
           </ul>
         </div>
-
         {/* Contact */}
         <div>
           <h4 className="!text-white !text-[18px] mb-[16px] font-[family-name:var(--font-heading)]">
@@ -56,10 +53,26 @@ export default function Footer() {
           </ul>
         </div>
       </div>
-
       <div className="border-t border-white/10">
-        <div className="max-w-[1200px] mx-auto px-[20px] py-[20px] text-center text-[13px] text-[#cedbf5]">
-          © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
+        <div className="max-w-[1200px] mx-auto px-[20px] py-[20px]">
+          <div className="text-center text-[13px] text-[#cedbf5] mb-[16px]">
+            © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
+          </div>
+          <div className="flex flex-wrap justify-center gap-[24px] text-[13px]">
+            <Link
+              href="/terms-and-conditions"
+              className="text-[#cedbf5] hover:text-[var(--color-primary)] transition-colors"
+            >
+              Terms & Conditions
+            </Link>
+            <span className="text-white/20">|</span>
+            <Link
+              href="/privacy-policy"
+              className="text-[#cedbf5] hover:text-[var(--color-primary)] transition-colors"
+            >
+              Privacy Policy
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
