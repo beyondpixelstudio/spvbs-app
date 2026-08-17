@@ -7,6 +7,7 @@ const links = [
   { label: "Overview", href: "/admin", icon: "📊" },
   { label: "Approvals", href: "/admin/approvals", icon: "✅" },
   { label: "Members", href: "/admin/members", icon: "👥" },
+  { label: "Delete/Edit Requests", href: "/admin/deletion-requests", icon: "🗑️" },
   { label: "Committee", href: "/admin/committee", icon: "🏛️" },
   { label: "Marriage Permissions", href: "/admin/marriage", icon: "💍" },
   { label: "Messages", href: "/admin/messages", icon: "✉️" },

@@ -3,10 +3,10 @@
 import { useState, useRef } from "react";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
+import DocumentAccessManager from "@/components/family/DocumentAccessManager";
 import {
   setDocsPassword,
   viewDocsPassword,
-  setDocsShared,
   uploadDocument,
   deleteDocument,
   unlockDocuments,
@@ -23,7 +23,7 @@ type Member = {
 };
 type UnlockedDoc = { id: string; docType: string; fileName: string; url: string | null };
 
-function MemberVault({ member }: { member: Member }) {
+function MemberVault({ member, profilePictureUrl }: { member: Member; profilePictureUrl?: string | null }) {
   const [open, setOpen] = useState(false);
   const [hasPassword, setHasPassword] = useState(member.hasPassword);
 
@@ -91,11 +91,6 @@ function MemberVault({ member }: { member: Member }) {
     }
   }
 
-  async function handleShareToggle(next: boolean) {
-    setShared(next);
-    await setDocsShared(member.id, next);
-  }
-
   async function handleUpload() {
     setUpMsg(null);
     if (!file) {
@@ -146,9 +141,17 @@ function MemberVault({ member }: { member: Member }) {
         className="w-full flex items-center justify-between gap-[14px] px-[24px] py-[18px] hover:bg-[#faf8f3] transition-colors cursor-pointer"
       >
         <div className="flex items-center gap-[14px] min-w-0">
-          <div className="w-[44px] h-[44px] rounded-full bg-[var(--color-bg-secondary)] text-white flex items-center justify-center text-[16px] font-[family-name:var(--font-heading)] shrink-0">
-            {member.fullName.charAt(0).toUpperCase()}
-          </div>
+          {profilePictureUrl ? (
+            <img
+              src={profilePictureUrl}
+              alt={member.fullName}
+              className="w-[44px] h-[44px] rounded-full object-cover shrink-0"
+            />
+          ) : (
+            <div className="w-[44px] h-[44px] rounded-full bg-[var(--color-bg-secondary)] text-white flex items-center justify-center text-[16px] font-[family-name:var(--font-heading)] shrink-0">
+              {member.fullName.charAt(0).toUpperCase()}
+            </div>
+          )}
           <div className="min-w-0 text-left">
             <div className="text-[16px] font-medium text-[var(--color-bg-secondary)] truncate">
               {member.fullName}
@@ -156,7 +159,6 @@ function MemberVault({ member }: { member: Member }) {
             <div className="text-[13px] text-[var(--color-text-secondary)]">
               {member.relation} • {member.documents.length}{" "}
               {member.documents.length === 1 ? "document" : "documents"}
-              {member.shared ? " • Shared" : ""}
             </div>
           </div>
         </div>
@@ -261,18 +263,8 @@ function MemberVault({ member }: { member: Member }) {
             )}
           </div>
 
-          {/* ===== Share toggle ===== */}
-          <label className="flex items-center gap-[10px] cursor-pointer">
-            <input
-              type="checkbox"
-              checked={shared}
-              onChange={(e) => handleShareToggle(e.target.checked)}
-              className="w-[18px] h-[18px] accent-[var(--color-primary)] cursor-pointer"
-            />
-            <span className="text-[15px] text-[var(--color-text)]">
-              Allow other logged-in members to view these documents (with the password)
-            </span>
-          </label>
+          {/* ===== Specific access grants ===== */}
+          {hasPassword && <DocumentAccessManager memberId={member.id} />}
 
           {/* ===== Upload (only after password set) ===== */}
           {hasPassword ? (
@@ -379,11 +371,11 @@ function MemberVault({ member }: { member: Member }) {
   );
 }
 
-export default function DocumentManager({ members }: { members: Member[] }) {
+export default function DocumentManager({ members, headProfilePictureUrl }: { members: Member[]; headProfilePictureUrl?: string | null }) {
   return (
     <div className="flex flex-col gap-[14px]">
       {members.map((m) => (
-        <MemberVault key={m.id} member={m} />
+        <MemberVault key={m.id} member={m} profilePictureUrl={m.relation === "Head" ? headProfilePictureUrl : null} />
       ))}
     </div>
   );

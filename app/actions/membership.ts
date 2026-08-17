@@ -5,6 +5,9 @@ import { prisma } from "@/lib/prisma";
 
 // Full server-side membership signup: creates the auth account (auto-confirmed)
 // AND saves all details in one go. Avoids client-side session timing issues.
+const MAX_PHOTO_SIZE = 200 * 1024; // 200KB
+const ALLOWED_PHOTO_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
 export async function submitMembership(input: {
   fullName: string;
   email: string;
@@ -19,6 +22,7 @@ export async function submitMembership(input: {
   mobile: string;
   taluka: string;
   villageTown: string;
+  photo?: File | null;
 }) {
   try {
     // Admin client (service role) — can create confirmed users
@@ -53,6 +57,29 @@ export async function submitMembership(input: {
         status: "PENDING",
       },
     });
+
+    // 2b. Optional profile picture upload (same rules as the dashboard uploader)
+    if (input.photo && input.photo.size > 0) {
+      if (input.photo.size > MAX_PHOTO_SIZE) {
+        return { error: "Profile photo must be under 200KB." };
+      }
+      if (!ALLOWED_PHOTO_TYPES.includes(input.photo.type)) {
+        return { error: "Profile photo must be JPG, PNG, or WebP." };
+      }
+      const ext = input.photo.type === "image/png" ? "png" : input.photo.type === "image/webp" ? "webp" : "jpg";
+      const path = `${authId}/avatar-${Date.now()}.${ext}`;
+      const { error: uploadError } = await admin.storage.from("profile-pictures").upload(path, input.photo, {
+        contentType: input.photo.type,
+        upsert: true,
+      });
+      if (!uploadError) {
+        const { data: urlData } = admin.storage.from("profile-pictures").getPublicUrl(path);
+        await prisma.user.update({
+          where: { id: authId },
+          data: { profilePictureUrl: urlData.publicUrl },
+        });
+      }
+    }
 
     // 3. Create the family unit
     const familyUnit = await prisma.familyUnit.upsert({

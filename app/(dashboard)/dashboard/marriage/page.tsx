@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import PendingLock from "@/components/PendingLock";
 
 const statusBadge: Record<string, { label: string; color: string; bg: string }> = {
   PENDING: { label: "Pending", color: "#8a6d1a", bg: "#ffc03920" },
@@ -25,6 +26,20 @@ function Tick({ label, done, by }: { label: string; done: boolean; by?: string |
 export default async function MyMarriagePage() {
   const user = await getCurrentUser();
   if (!user) return null;
+
+  if (user.status === "PENDING") {
+    return (
+      <div>
+        <h2 className="!text-[32px] text-[var(--color-bg-secondary)] mb-[6px]">
+          Marriage & Negotiation
+        </h2>
+        <p className="text-[16px] text-[var(--color-text-secondary)] mb-[30px]">
+          Submit marriage and negotiation applications.
+        </p>
+        <PendingLock feature="Marriage & Negotiation" />
+      </div>
+    );
+  }
 
   const apps = await prisma.marriagePermission.findMany({
     where: { submittedByUserId: user.id },

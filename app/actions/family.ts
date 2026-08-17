@@ -106,33 +106,44 @@ async function getMyFamilyUnitId() {
   return fu?.id ?? null;
 }
 
+// Adding a member no longer creates it directly — it goes to Super Admin for approval.
 export async function addFamilyMember(input: MemberInput) {
   const familyUnitId = await getMyFamilyUnitId();
   if (!familyUnitId) return { error: "Set up your family first" };
   if (!input.fullName.trim()) return { error: "Name is required" };
 
-  await prisma.familyMember.create({
+  const user = await getCurrentUser();
+  if (!user) return { error: "Not authorized" };
+
+  await prisma.memberDeletionRequest.create({
     data: {
-      familyUnitId,
+      requestType: "ADD",
+      memberId: null,
+      memberName: input.fullName.trim(),
       relation: input.relation || "Other",
-      fullName: input.fullName.trim(),
-      gender: input.gender ? (input.gender as any) : null,
-      dob: input.dob ? new Date(input.dob) : null,
-      maritalStatus: input.maritalStatus ? (input.maritalStatus as any) : null,
-      qualification: input.qualification || null,
-      occupation: input.occupation || null,
-      mobileNumber: input.mobileNumber || null,
-      bloodGroup: input.bloodGroup || null,
-      currentStatus: input.currentStatus ? (input.currentStatus as any) : null,
-      villageTown: input.villageTown || null,
-      visibility: input.visibility ? (input.visibility as any) : "MEMBERS_ONLY",
+      familyUnitId,
+      requestedById: user.id,
+      proposedChanges: {
+        relation: input.relation || "Other",
+        fullName: input.fullName.trim(),
+        gender: input.gender || null,
+        dob: input.dob || null,
+        maritalStatus: input.maritalStatus || null,
+        qualification: input.qualification || null,
+        occupation: input.occupation || null,
+        mobileNumber: input.mobileNumber || null,
+        bloodGroup: input.bloodGroup || null,
+        currentStatus: input.currentStatus || null,
+        villageTown: input.villageTown || null,
+      },
     },
   });
 
   revalidatePath("/dashboard/family");
-  return { success: true };
+  return { success: true, pendingApproval: true };
 }
 
+// Editing a member no longer updates it directly — it goes to Super Admin for approval.
 export async function updateFamilyMember(memberId: string, input: MemberInput) {
   const familyUnitId = await getMyFamilyUnitId();
   if (!familyUnitId) return { error: "Not authorized" };
@@ -143,29 +154,43 @@ export async function updateFamilyMember(memberId: string, input: MemberInput) {
   });
   if (!member) return { error: "Member not found" };
 
-  await prisma.familyMember.update({
-    where: { id: memberId },
+  const user = await getCurrentUser();
+  if (!user) return { error: "Not authorized" };
+
+  const existing = await prisma.memberDeletionRequest.findFirst({
+    where: { memberId, status: "PENDING", requestType: "EDIT" },
+  });
+  if (existing) return { error: "An edit request for this member is already pending approval." };
+
+  await prisma.memberDeletionRequest.create({
     data: {
+      requestType: "EDIT",
+      memberId,
+      memberName: input.fullName.trim() || member.fullName,
       relation: input.relation || member.relation,
-      fullName: input.fullName.trim() || member.fullName,
-      gender: input.gender ? (input.gender as any) : null,
-      dob: input.dob ? new Date(input.dob) : null,
-      maritalStatus: input.maritalStatus ? (input.maritalStatus as any) : null,
-      qualification: input.qualification || null,
-      occupation: input.occupation || null,
-      mobileNumber: input.mobileNumber || null,
-      bloodGroup: input.bloodGroup || null,
-      currentStatus: input.currentStatus ? (input.currentStatus as any) : null,
-      villageTown: input.villageTown || null,
-      visibility: input.visibility ? (input.visibility as any) : member.visibility,
+      familyUnitId,
+      requestedById: user.id,
+      proposedChanges: {
+        relation: input.relation || member.relation,
+        fullName: input.fullName.trim() || member.fullName,
+        gender: input.gender || null,
+        dob: input.dob || null,
+        maritalStatus: input.maritalStatus || null,
+        qualification: input.qualification || null,
+        occupation: input.occupation || null,
+        mobileNumber: input.mobileNumber || null,
+        bloodGroup: input.bloodGroup || null,
+        currentStatus: input.currentStatus || null,
+        villageTown: input.villageTown || null,
+      },
     },
   });
 
   revalidatePath("/dashboard/family");
-  return { success: true };
+  return { success: true, pendingApproval: true };
 }
 
-export async function deleteFamilyMember(memberId: string) {
+export async function deleteFamilyMember(memberId: string, reason?: string) {
   const familyUnitId = await getMyFamilyUnitId();
   if (!familyUnitId) return { error: "Not authorized" };
 
@@ -175,20 +200,39 @@ export async function deleteFamilyMember(memberId: string) {
   if (!member) return { error: "Member not found" };
   if (member.relation === "Head") return { error: "Cannot delete the Head of Family" };
 
-  await prisma.familyMember.delete({ where: { id: memberId } });
+  const user = await getCurrentUser();
+  if (!user) return { error: "Not authorized" };
+
+  const existing = await prisma.memberDeletionRequest.findFirst({
+    where: { memberId, status: "PENDING", requestType: "DELETE" },
+  });
+  if (existing) return { error: "A deletion request for this member is already pending approval." };
+
+  await prisma.memberDeletionRequest.create({
+    data: {
+      requestType: "DELETE",
+      memberId,
+      memberName: member.fullName,
+      relation: member.relation,
+      familyUnitId,
+      requestedById: user.id,
+      reason: reason || null,
+    },
+  });
 
   revalidatePath("/dashboard/family");
-  return { success: true };
+  return { success: true, pendingApproval: true };
 }
 
-// Toggle a member's visibility (public / members_only / hidden)
+// Visibility is now controlled by Admins only — Family Heads can no longer change it.
 export async function setMemberVisibility(memberId: string, visibility: string) {
-  const familyUnitId = await getMyFamilyUnitId();
-  if (!familyUnitId) return { error: "Not authorized" };
+  const user = await getCurrentUser();
+  if (!user) return { error: "Not authorized" };
+  if (user.role !== "SUPER_ADMIN" && user.role !== "TALUKA_ADMIN") {
+    return { error: "Only admins can change member visibility." };
+  }
 
-  const member = await prisma.familyMember.findFirst({
-    where: { id: memberId, familyUnitId },
-  });
+  const member = await prisma.familyMember.findUnique({ where: { id: memberId } });
   if (!member) return { error: "Member not found" };
 
   await prisma.familyMember.update({
@@ -197,5 +241,6 @@ export async function setMemberVisibility(memberId: string, visibility: string) 
   });
 
   revalidatePath("/dashboard/family");
+  revalidatePath("/members");
   return { success: true };
 }

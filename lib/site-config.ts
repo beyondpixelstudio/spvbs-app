@@ -11,7 +11,14 @@ export const siteConfig = {
   nav: [
     { label: "Home", href: "/" },
     { label: "Members", href: "/members" },
-    { label: "Committee", href: "/committee" },
+    {
+      label: "Committee",
+      href: "/committee/central",
+      children: [
+        { label: "Central Committee", href: "/committee/central" },
+        { label: "Taluka Committee", href: "/committee/taluka" },
+      ],
+    },
     { label: "Events", href: "/events" },
     {
       label: "Permission",

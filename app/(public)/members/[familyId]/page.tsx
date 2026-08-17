@@ -44,9 +44,17 @@ export default async function FamilyProfilePage({
           </Link>
 
           <div className="flex flex-wrap items-center gap-[22px] mt-[26px]">
-            <div className="w-[88px] h-[88px] rounded-[26px] bg-gradient-to-br from-[var(--color-primary)] to-[#9a7835] text-white flex items-center justify-center text-[36px] font-[family-name:var(--font-heading)] shrink-0 ring-4 ring-white/10">
-              {family.familyName.charAt(0).toUpperCase()}
-            </div>
+            {family.familyHeadUser?.profilePictureUrl ? (
+              <img
+                src={family.familyHeadUser.profilePictureUrl}
+                alt={family.familyName}
+                className="w-[88px] h-[88px] rounded-[26px] object-cover shrink-0 ring-4 ring-white/10"
+              />
+            ) : (
+              <div className="w-[88px] h-[88px] rounded-[26px] bg-gradient-to-br from-[var(--color-primary)] to-[#9a7835] text-white flex items-center justify-center text-[36px] font-[family-name:var(--font-heading)] shrink-0 ring-4 ring-white/10">
+                {family.familyName.charAt(0).toUpperCase()}
+              </div>
+            )}
             <div>
               <h1 className="!text-[34px] !leading-[1.15] !text-white">
                 {family.familyName}
@@ -171,7 +179,7 @@ function MemberDetailCard({
         ))}
       </div>
 
-      {member.docsSharedWhenLoggedIn && member._count?.privateDocuments > 0 && (
+      {member.hasDocAccess && member._count?.privateDocuments > 0 && (
         <div className="px-[28px] pb-[24px]">
           <SharedDocuments
             memberId={member.id}

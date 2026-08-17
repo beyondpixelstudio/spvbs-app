@@ -2,10 +2,25 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import GrievanceForm from "@/components/grievance/GrievanceForm";
 import MemberGrievanceCard from "@/components/grievance/MemberGrievanceCard";
+import PendingLock from "@/components/PendingLock";
 
 export default async function GrievancePage() {
   const user = await getCurrentUser();
   if (!user) return null;
+
+  if (user.status === "PENDING") {
+    return (
+      <div>
+        <h2 className="!text-[32px] text-[var(--color-bg-secondary)] mb-[6px]">
+          Grievances
+        </h2>
+        <p className="text-[16px] text-[var(--color-text-secondary)] mb-[30px]">
+          Raise concerns and track their resolution.
+        </p>
+        <PendingLock feature="Grievances" />
+      </div>
+    );
+  }
 
   const family = await prisma.familyUnit.findUnique({
     where: { familyHeadUserId: user.id },

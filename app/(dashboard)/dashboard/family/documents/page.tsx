@@ -1,11 +1,25 @@
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import DocumentManager from "@/components/family/DocumentManager";
+import PendingLock from "@/components/PendingLock";
 
 export default async function DocumentsPage() {
   const user = await getCurrentUser();
   if (!user) return null;
 
+  if (user.status === "PENDING") {
+    return (
+      <div>
+        <h2 className="!text-[32px] text-[var(--color-bg-secondary)] mb-[6px]">
+          Documents
+        </h2>
+        <p className="text-[16px] text-[var(--color-text-secondary)] mb-[30px]">
+          Securely store family documents.
+        </p>
+        <PendingLock feature="Documents" />
+      </div>
+    );
+  }
   const family = await prisma.familyUnit.findUnique({
     where: { familyHeadUserId: user.id },
     include: {
@@ -61,7 +75,7 @@ export default async function DocumentsPage() {
         </p>
       </div>
 
-      <DocumentManager members={members} />
+      <DocumentManager members={members} headProfilePictureUrl={user.profilePictureUrl} />
     </div>
   );
 }

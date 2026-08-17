@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ProfilePictureUpload from "@/components/profile/ProfilePictureUpload";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
@@ -45,6 +46,9 @@ export default async function DashboardOverview() {
 
   return (
     <div>
+      <div className="mb-[24px]">
+        <ProfilePictureUpload currentUrl={user.profilePictureUrl} />
+      </div>
       {/* Roles & Responsibilities */}
       {(familyUnit || committee.length > 0 || user.role === "SUPER_ADMIN" || user.role === "TALUKA_ADMIN") && (
         <div className="bg-[var(--color-bg-secondary)] rounded-[20px] p-[24px] mb-[24px]">

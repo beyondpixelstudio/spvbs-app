@@ -6,9 +6,9 @@ import { removeCommittee } from "@/app/actions/committee";
 const canApprove = (type: string) => type === "Advisor" || type === "Core Committee";
 
 export default function CommitteeMemberRow({
-  id, name, level, type, designation, taluka,
+  id, name, level, type, designation, taluka, profilePictureUrl,
 }: {
-  id: string; name: string; level: string; type: string; designation: string; taluka: string;
+  id: string; name: string; level: string; type: string; designation: string; taluka: string; profilePictureUrl?: string;
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -22,9 +22,17 @@ export default function CommitteeMemberRow({
   return (
     <div className="bg-white rounded-[16px] border border-[#ece5d5] px-[20px] py-[16px] flex flex-wrap items-center justify-between gap-[12px]" style={{ boxShadow: "rgba(40, 63, 116, 0.06) 0px 4px 20px 0px" }}>
       <div className="flex items-center gap-[14px] min-w-0">
-        <div className="w-[44px] h-[44px] rounded-[14px] bg-gradient-to-br from-[var(--color-bg-secondary)] to-[#1a2f5c] text-white flex items-center justify-center text-[16px] font-[family-name:var(--font-heading)] shrink-0">
-          {name.charAt(0).toUpperCase()}
-        </div>
+        {profilePictureUrl ? (
+          <img
+            src={profilePictureUrl}
+            alt={name}
+            className="w-[44px] h-[44px] rounded-[14px] object-cover shrink-0"
+          />
+        ) : (
+          <div className="w-[44px] h-[44px] rounded-[14px] bg-gradient-to-br from-[var(--color-bg-secondary)] to-[#1a2f5c] text-white flex items-center justify-center text-[16px] font-[family-name:var(--font-heading)] shrink-0">
+            {name.charAt(0).toUpperCase()}
+          </div>
+        )}
         <div className="min-w-0">
           <div className="text-[16px] font-medium text-[var(--color-bg-secondary)] truncate">{name}</div>
           <div className="text-[13px] text-[var(--color-text-secondary)]">

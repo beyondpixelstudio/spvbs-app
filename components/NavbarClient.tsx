@@ -9,7 +9,7 @@ import { logout } from "@/app/actions/auth";
 
 type NavChild = { label: string; href: string };
 type NavItem = { label: string; href: string; children?: NavChild[] };
-type NavUser = { name: string; role: string } | null;
+type NavUser = { name: string; role: string; profilePictureUrl?: string | null } | null;
 
 export default function NavbarClient({ user }: { user: NavUser }) {
   const [open, setOpen] = useState(false);
@@ -86,9 +86,17 @@ export default function NavbarClient({ user }: { user: NavUser }) {
           {user ? (
             <>
               <Link href={dashHref} className="flex items-center gap-[8px] text-[16px] text-[var(--color-text)] hover:text-[var(--color-primary)]">
-                <span className="w-[34px] h-[34px] rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-[15px] font-medium">
-                  {user.name.charAt(0).toUpperCase()}
-                </span>
+                {user.profilePictureUrl ? (
+                  <img
+                    src={user.profilePictureUrl}
+                    alt={user.name}
+                    className="w-[34px] h-[34px] rounded-full object-cover"
+                  />
+                ) : (
+                  <span className="w-[34px] h-[34px] rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-[15px] font-medium">
+                    {user.name.charAt(0).toUpperCase()}
+                  </span>
+                )}
                 {user.name.split(" ")[0]}
               </Link>
               <form action={logout}>

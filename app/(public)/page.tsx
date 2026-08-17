@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { siteConfig } from "@/lib/site-config";
 import Button from "@/components/Button";
 
@@ -19,7 +20,7 @@ const features = [
   },
   {
     title: "Events & Sammelan",
-    desc: "Stay updated on gatherings, festivals, and functions. RSVP and never miss a moment.",
+    desc: "Stay updated on gatherings, festivals, and functions of our samaj.",
     href: "/events",
     color: "var(--color-extra-green)",
     icon: "📅",
@@ -222,6 +223,40 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+        {/* ===== CHITTOOR JUDGEMENT ===== */}
+        <section className="bg-[var(--color-bg-secondary)] py-[80px] px-[20px]">
+          <div className="max-w-[900px] mx-auto text-center">
+            <Image
+              src="/logo.png"
+              alt={siteConfig.shortName + " logo"}
+              width={64}
+              height={64}
+              className="object-contain mx-auto mb-[20px]"
+            />
+            <h2 className="!text-[32px] !text-white font-[family-name:var(--font-heading)] mb-[24px]">
+              The Chittoor Judgement
+            </h2>
+            <p className="text-[15px] text-[#cedbf5] leading-[1.9]">
+              Chittoor Judgement Details about Chittoor District court judgement. In Chittoor district, some
+              Brahmins tried to restrict the Viswabrahmins from conducting their marriages without the
+              help of the Purohith Brahmin, and studying the VEDAS, so that we do not have the right to
+              conduct Veda Adhikaram. It was a controversy between the panchangam gundaiah(brahmin) and
+              the Margasahaya Achari(viswa brahmin). The brahmin community harrassed our community by
+              claiming superiority. So Mr. M.S Achary put a case on the Brahmin community in the Adalath
+              court Chittoor. The judge was Mr.Daker Dora. Mr.Achary showed direct evidence from the VEDAS
+              proving Lord Viswakarma is superior to all gods. Mr. Gundappa attempted to show evidence from
+              puranas, which was written by VYASA who was not a brahmin (he is the son of a fisherman). But
+              VEDAS are superior to secondary texts rewritten by vested interests. The Vedas repeatedly
+              praise LORD OF LORDS Bhagwan VISWAKARMA. Mr.Achary provided logical arguments and bulletproof
+              answers to the questions asked by the brahmins. Finally brahmins were forced to shut their
+              mouths since the Judge agreed with the answers given by Mr.Achary. A total of 65 questions
+              were asked by the brahmins and every single of them was answered by Mr. Achary with factual
+              evidence from the Vedas.
+            </p>
+          </div>
+        </section>
+
     </main>
   );
 }

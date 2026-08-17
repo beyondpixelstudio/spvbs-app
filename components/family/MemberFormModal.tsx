@@ -76,6 +76,13 @@ export default function MemberFormModal({
     setLoading(false);
     if (res?.error) {
       setError(res.error);
+    } else if (res?.pendingApproval) {
+      alert(
+        isEdit
+          ? "Your changes have been submitted for Super Admin approval. They will apply once approved."
+          : "This member has been submitted for Super Admin approval. They will appear once approved."
+      );
+      onClose();
     } else {
       onClose();
     }
@@ -172,14 +179,6 @@ export default function MemberFormModal({
             label="Village / Town"
             value={form.villageTown}
             onChange={(e) => update("villageTown", e.target.value)}
-          />
-          <Select
-            id="visibility"
-            label="Visibility"
-            options={VISIBILITY_OPTIONS}
-            placeholder="Members only"
-            value={form.visibility}
-            onChange={(e) => update("visibility", e.target.value)}
           />
         </div>
 

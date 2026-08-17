@@ -11,7 +11,7 @@ const visibilityBadge: Record<string, { label: string; color: string; bg: string
   HIDDEN: { label: "Hidden", color: "#666666", bg: "#66666615" },
 };
 
-export default function MembersList({ members }: { members: MemberData[] }) {
+export default function MembersList({ members, headProfilePictureUrl }: { members: MemberData[]; headProfilePictureUrl?: string | null }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<MemberData | undefined>(undefined);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -25,10 +25,20 @@ export default function MembersList({ members }: { members: MemberData[] }) {
     setModalOpen(true);
   }
   async function handleDelete(id: string) {
-    if (!confirm("Remove this family member?")) return;
+    const reason = prompt("Please provide a reason for removing this family member (this will be sent to the Super Admin for approval):");
+    if (reason === null) return; // cancelled
+    if (!reason.trim()) {
+      alert("A reason is required to submit a deletion request.");
+      return;
+    }
     setDeletingId(id);
-    await deleteFamilyMember(id);
+    const res = await deleteFamilyMember(id, reason.trim());
     setDeletingId(null);
+    if (res?.error) {
+      alert(res.error);
+    } else if (res?.pendingApproval) {
+      alert("Deletion request submitted. It will be removed once a Super Admin approves it.");
+    }
   }
 
   const sorted = [...members].sort((a, b) =>
@@ -62,9 +72,17 @@ export default function MembersList({ members }: { members: MemberData[] }) {
                 style={{ boxShadow: "var(--shadow-elevated)" }}
               >
                 <div className="flex items-center gap-[14px] min-w-0">
-                  <div className="w-[46px] h-[46px] rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-[18px] font-medium shrink-0">
-                    {m.fullName.charAt(0).toUpperCase()}
-                  </div>
+                  {isHead && headProfilePictureUrl ? (
+                    <img
+                      src={headProfilePictureUrl}
+                      alt={m.fullName}
+                      className="w-[46px] h-[46px] rounded-full object-cover shrink-0"
+                    />
+                  ) : (
+                    <div className="w-[46px] h-[46px] rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-[18px] font-medium shrink-0">
+                      {m.fullName.charAt(0).toUpperCase()}
+                    </div>
+                  )}
                   <div className="min-w-0">
                     <div className="flex items-center gap-[8px]">
                       <span className="text-[17px] font-medium text-[var(--color-text)] truncate">

@@ -25,14 +25,14 @@ function ApprovalTick({ label, done, by }: { label: string; done: boolean; by?: 
 
 export default function MarriageApprovalCard({
   id, groomName, brideName, taluka, marriageDate, status, rejectionReason,
-  submitterName, submitterTaluka, submitterVillage,
+  submitterName, submitterTaluka, submitterVillage, submitterProfilePictureUrl,
   talukaApproved, centralApproved, adminApproved,
   talukaApprovedBy, centralApprovedBy, adminApprovedBy,
   canApproveTaluka, canApproveCentral, canApproveAdmin,
 }: {
   id: string; groomName: string; brideName: string; taluka: string; marriageDate: string;
   status: string; rejectionReason: string | null;
-  submitterName?: string; submitterTaluka?: string; submitterVillage?: string;
+  submitterName?: string; submitterTaluka?: string; submitterVillage?: string; submitterProfilePictureUrl?: string | null;
   talukaApproved: boolean; centralApproved: boolean; adminApproved: boolean;
   talukaApprovedBy?: string | null; centralApprovedBy?: string | null; adminApprovedBy?: string | null;
   canApproveTaluka: boolean; canApproveCentral: boolean; canApproveAdmin: boolean;
@@ -91,10 +91,23 @@ export default function MarriageApprovalCard({
             Taluka: {taluka} • Date: {marriageDate}
           </p>
           {submitterName && (
-            <p className="text-[12px] text-[var(--color-text-secondary)] mt-[4px]">
-              Applied by: <span className="text-[var(--color-primary)] font-medium">{submitterName}</span>
-              {submitterTaluka ? ` • ${submitterTaluka}` : ""}{submitterVillage ? ` • ${submitterVillage}` : ""}
-            </p>
+            <div className="flex items-center gap-[8px] mt-[6px]">
+              {submitterProfilePictureUrl ? (
+                <img
+                  src={submitterProfilePictureUrl}
+                  alt={submitterName}
+                  className="w-[22px] h-[22px] rounded-full object-cover shrink-0"
+                />
+              ) : (
+                <div className="w-[22px] h-[22px] rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-[10px] font-medium shrink-0">
+                  {submitterName.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <p className="text-[12px] text-[var(--color-text-secondary)]">
+                Applied by: <span className="text-[var(--color-primary)] font-medium">{submitterName}</span>
+                {submitterTaluka ? ` • ${submitterTaluka}` : ""}{submitterVillage ? ` • ${submitterVillage}` : ""}
+              </p>
+            </div>
           )}
         </div>
         <span className="text-[12px] font-medium px-[12px] py-[5px] rounded-[40px]" style={{ color: badge.color, background: badge.bg }}>

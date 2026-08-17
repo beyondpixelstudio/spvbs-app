@@ -132,6 +132,7 @@ model User {
   createdEvents      Event[]     @relation("EventCreatedBy")
   uploadedGalleries  GalleryAlbum[] @relation("GalleryUploadedBy")
   sentBroadcasts     Broadcast[] @relation("BroadcastSentBy")
+  documentAccessGrants DocumentAccessGrant[]
 }
 
 model FamilyUnit {
@@ -145,6 +146,7 @@ model FamilyUnit {
   createdAt           DateTime @default(now())
 
   members FamilyMember[]
+  deletionRequests MemberDeletionRequest[]
 }
 
 model FamilyMember {
@@ -171,6 +173,7 @@ model FamilyMember {
   privateDocuments      PrivateDocument[]
   docsPasswordEnc      String?
   docsSharedWhenLoggedIn Boolean @default(false)
+  documentAccessGrants DocumentAccessGrant[]
   matrimonialProfile    MatrimonialProfile?
   eventRsvps            EventRSVP[]
   donations              Donation[]
@@ -447,4 +450,44 @@ model ContactMessage {
   message   String
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
+}
+
+model MemberDeletionRequest {
+  id             String   @id @default(cuid())
+  requestType    MemberRequestType @default(DELETE)
+  memberId       String?
+  memberName     String
+  relation       String
+  familyUnitId   String
+  familyUnit     FamilyUnit @relation(fields: [familyUnitId], references: [id])
+  requestedById  String
+  reason         String?
+  proposedChanges Json?
+  status         DeletionRequestStatus @default(PENDING)
+  rejectionReason String?
+  createdAt      DateTime @default(now())
+  decidedAt      DateTime?
+}
+
+enum DeletionRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum MemberRequestType {
+  ADD
+  EDIT
+  DELETE
+}
+
+model DocumentAccessGrant {
+  id             String   @id @default(cuid())
+  familyMemberId String
+  familyMember   FamilyMember @relation(fields: [familyMemberId], references: [id])
+  grantedToUserId String
+  grantedToUser  User     @relation(fields: [grantedToUserId], references: [id])
+  createdAt      DateTime @default(now())
+
+  @@unique([familyMemberId, grantedToUserId])
 }

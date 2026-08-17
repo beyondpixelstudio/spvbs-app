@@ -22,7 +22,7 @@ type Member = {
   kundli: KundliData | null;
 };
 
-function MemberKundli({ member }: { member: Member }) {
+function MemberKundli({ member, profilePictureUrl }: { member: Member; profilePictureUrl?: string | null }) {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<KundliData>({
     birthDate: member.kundli?.birthDate || "",
@@ -68,9 +68,17 @@ function MemberKundli({ member }: { member: Member }) {
         className="w-full flex items-center justify-between gap-[14px] px-[24px] py-[18px] hover:bg-[#faf8f3] transition-colors cursor-pointer"
       >
         <div className="flex items-center gap-[14px] min-w-0">
-          <div className="w-[44px] h-[44px] rounded-full bg-[var(--color-bg-secondary)] text-white flex items-center justify-center text-[16px] font-[family-name:var(--font-heading)] shrink-0">
-            {member.fullName.charAt(0).toUpperCase()}
-          </div>
+          {profilePictureUrl ? (
+            <img
+              src={profilePictureUrl}
+              alt={member.fullName}
+              className="w-[44px] h-[44px] rounded-full object-cover shrink-0"
+            />
+          ) : (
+            <div className="w-[44px] h-[44px] rounded-full bg-[var(--color-bg-secondary)] text-white flex items-center justify-center text-[16px] font-[family-name:var(--font-heading)] shrink-0">
+              {member.fullName.charAt(0).toUpperCase()}
+            </div>
+          )}
           <div className="min-w-0 text-left">
             <div className="text-[16px] font-medium text-[var(--color-bg-secondary)] truncate">
               {member.fullName}
@@ -165,11 +173,11 @@ function MemberKundli({ member }: { member: Member }) {
   );
 }
 
-export default function KundliManager({ members }: { members: Member[] }) {
+export default function KundliManager({ members, headProfilePictureUrl }: { members: Member[]; headProfilePictureUrl?: string | null }) {
   return (
     <div className="flex flex-col gap-[14px]">
       {members.map((m) => (
-        <MemberKundli key={m.id} member={m} />
+        <MemberKundli key={m.id} member={m} profilePictureUrl={m.relation === "Head" ? headProfilePictureUrl : null} />
       ))}
     </div>
   );

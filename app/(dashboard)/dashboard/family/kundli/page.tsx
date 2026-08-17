@@ -1,10 +1,25 @@
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import KundliManager from "@/components/family/KundliManager";
+import PendingLock from "@/components/PendingLock";
 
 export default async function KundliPage() {
   const user = await getCurrentUser();
   if (!user) return null;
+
+  if (user.status === "PENDING") {
+    return (
+      <div>
+        <h2 className="!text-[32px] text-[var(--color-bg-secondary)] mb-[6px]">
+          Janam Kundli
+        </h2>
+        <p className="text-[16px] text-[var(--color-text-secondary)] mb-[30px]">
+          Manage birth details for each family member.
+        </p>
+        <PendingLock feature="Janam Kundli" />
+      </div>
+    );
+  }
 
   const family = await prisma.familyUnit.findUnique({
     where: { familyHeadUserId: user.id },
@@ -68,7 +83,7 @@ export default async function KundliPage() {
         </p>
       </div>
 
-      <KundliManager members={members} />
+      <KundliManager members={members} headProfilePictureUrl={user.profilePictureUrl} />
     </div>
   );
 }

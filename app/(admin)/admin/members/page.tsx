@@ -33,7 +33,7 @@ export default async function AdminMembersPage({
           : {}),
       },
       include: {
-        familyHeadUser: { select: { id: true, email: true, status: true } },
+        familyHeadUser: { select: { id: true, email: true, status: true, profilePictureUrl: true } },
         _count: { select: { members: true } },
       },
       orderBy: { familyName: "asc" },
@@ -86,6 +86,7 @@ export default async function AdminMembersPage({
               memberCount={f._count.members}
               email={f.familyHeadUser?.email || "—"}
               status={f.familyHeadUser?.status || "PENDING"}
+              profilePictureUrl={f.familyHeadUser?.profilePictureUrl || undefined}
             />
           ))}
         </div>

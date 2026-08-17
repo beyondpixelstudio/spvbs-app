@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Button from "@/components/Button";
 import EventForm from "@/components/events/EventForm";
-import { deleteEvent, getEventAttendees, toggleCheckIn } from "@/app/actions/events";
+import { deleteEvent } from "@/app/actions/events";
 
 type EventItem = {
   id: string;
@@ -12,17 +12,12 @@ type EventItem = {
   dateTime: string;
   location: string | null;
   taluka: string | null;
-  rsvpCapacity: number | null;
-  rsvpCount: number;
 };
 
 export default function EventsManager({ events }: { events: EventItem[] }) {
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<EventItem | null>(null);
   const [loading, setLoading] = useState(false);
-  const [attendanceFor, setAttendanceFor] = useState<string | null>(null);
-  const [attendees, setAttendees] = useState<any[]>([]);
-  const [attLoading, setAttLoading] = useState(false);
 
   const now = Date.now();
   const upcoming = events.filter((e) => new Date(e.dateTime).getTime() >= now);
@@ -47,20 +42,6 @@ export default function EventsManager({ events }: { events: EventItem[] }) {
   const fmtDate = (d: string) =>
     new Date(d).toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
-  async function openAttendance(eventId: string) {
-    if (attendanceFor === eventId) { setAttendanceFor(null); return; }
-    setAttLoading(true);
-    setAttendanceFor(eventId);
-    const res = await getEventAttendees(eventId);
-    setAttendees(res.attendees || []);
-    setAttLoading(false);
-  }
-
-  async function handleCheckIn(rsvpId: string, checkedIn: boolean) {
-    await toggleCheckIn(rsvpId, checkedIn);
-    setAttendees((prev) => prev.map((a) => a.rsvpId === rsvpId ? { ...a, checkedIn } : a));
-  }
-
   function EventRow({ e, isPast }: { e: EventItem; isPast?: boolean }) {
     return (
       <div className={`bg-white rounded-[18px] border border-[#ece5d5] p-[20px] ${isPast ? "opacity-70" : ""}`} style={{ boxShadow: "rgba(40, 63, 116, 0.06) 0px 4px 20px 0px" }}>
@@ -73,48 +54,11 @@ export default function EventsManager({ events }: { events: EventItem[] }) {
               {e.taluka ? ` • ${e.taluka}` : ""}
             </p>
             {e.description && <p className="text-[14px] text-[var(--color-text)] mt-[8px] leading-relaxed">{e.description}</p>}
-            <p className="text-[13px] text-[var(--color-primary)] mt-[8px] font-medium">
-              {e.rsvpCount} RSVP{e.rsvpCount !== 1 ? "s" : ""}{e.rsvpCapacity ? ` / ${e.rsvpCapacity} capacity` : ""}
-            </p>
           </div>
           <div className="flex items-center gap-[10px] shrink-0">
             <button onClick={() => openEdit(e)} className="text-[14px] text-[var(--color-primary)] hover:opacity-80 cursor-pointer">Edit</button>
             <button onClick={() => handleDelete(e.id, e.title)} disabled={loading} className="text-[14px] text-[var(--color-secondary)] hover:opacity-80 cursor-pointer disabled:opacity-50">Delete</button>
           </div>
-        </div>
-
-        {/* Attendance */}
-        <div className="mt-[14px] pt-[14px] border-t border-[#f0eadd]">
-          <button onClick={() => openAttendance(e.id)} className="text-[14px] text-[var(--color-primary)] font-medium hover:opacity-80 cursor-pointer">
-            {attendanceFor === e.id ? "Hide attendance ▲" : "View attendance / check-in ▼"}
-          </button>
-
-          {attendanceFor === e.id && (
-            <div className="mt-[12px]">
-              {attLoading ? (
-                <p className="text-[14px] text-[var(--color-text-secondary)]">Loading...</p>
-              ) : attendees.length === 0 ? (
-                <p className="text-[14px] text-[var(--color-text-secondary)]">No one has RSVP'd yet.</p>
-              ) : (
-                <div className="flex flex-col gap-[8px]">
-                  {attendees.map((a) => (
-                    <div key={a.rsvpId} className="flex items-center justify-between gap-[12px] bg-[#faf8f3] border border-[#ece5d5] rounded-[12px] px-[14px] py-[10px]">
-                      <div className="min-w-0">
-                        <div className="text-[14px] text-[var(--color-bg-secondary)] font-medium truncate">{a.name}</div>
-                        <div className="text-[12px] text-[var(--color-text-secondary)]">{a.family}{a.taluka ? ` • ${a.taluka}` : ""}</div>
-                      </div>
-                      <button
-                        onClick={() => handleCheckIn(a.rsvpId, !a.checkedIn)}
-                        className={`text-[13px] font-medium px-[14px] py-[6px] rounded-[40px] cursor-pointer shrink-0 ${a.checkedIn ? "bg-[var(--color-extra-green)] text-white" : "border border-[#ece5d5] text-[var(--color-text)] hover:border-[var(--color-primary)]"}`}
-                      >
-                        {a.checkedIn ? "✓ Present" : "Mark present"}
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
         </div>
       </div>
     );
@@ -163,7 +107,6 @@ export default function EventsManager({ events }: { events: EventItem[] }) {
                 dateTime: editing.dateTime.slice(0, 16),
                 location: editing.location || "",
                 taluka: editing.taluka || "",
-                rsvpCapacity: editing.rsvpCapacity ? String(editing.rsvpCapacity) : "",
               } : undefined}
               onClose={() => setShowForm(false)}
             />

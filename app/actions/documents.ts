@@ -130,6 +130,58 @@ export async function deleteDocument(documentId: string) {
   return { success: true };
 }
 
+// ===== Document Access Grants (specific users allowed to unlock) =====
+
+export async function getDocumentAccessGrants(memberId: string) {
+  const member = await verifyOwner(memberId);
+  if (!member) return { error: "Not authorized", grants: [] };
+
+  const grants = await prisma.documentAccessGrant.findMany({
+    where: { familyMemberId: memberId },
+    include: {
+      grantedToUser: {
+        select: { id: true, email: true, profilePictureUrl: true, familyUnit: { select: { familyName: true } } },
+      },
+    },
+  });
+
+  return {
+    success: true,
+    grants: grants.map((g) => ({
+      id: g.id,
+      userId: g.grantedToUserId,
+      name: g.grantedToUser.familyUnit?.familyName || g.grantedToUser.email || "Unknown",
+      profilePictureUrl: g.grantedToUser.profilePictureUrl,
+    })),
+  };
+}
+
+export async function grantDocumentAccess(memberId: string, userId: string) {
+  const member = await verifyOwner(memberId);
+  if (!member) return { error: "Not authorized" };
+
+  await prisma.documentAccessGrant.upsert({
+    where: { familyMemberId_grantedToUserId: { familyMemberId: memberId, grantedToUserId: userId } },
+    update: {},
+    create: { familyMemberId: memberId, grantedToUserId: userId },
+  });
+
+  revalidatePath("/dashboard/family/documents");
+  return { success: true };
+}
+
+export async function revokeDocumentAccess(memberId: string, userId: string) {
+  const member = await verifyOwner(memberId);
+  if (!member) return { error: "Not authorized" };
+
+  await prisma.documentAccessGrant.deleteMany({
+    where: { familyMemberId: memberId, grantedToUserId: userId },
+  });
+
+  revalidatePath("/dashboard/family/documents");
+  return { success: true };
+}
+
 // Unlock documents for viewing (uses the DOCUMENT password, not account password)
 export async function unlockDocuments(memberId: string, password: string) {
   const user = await getCurrentUser();
@@ -142,8 +194,15 @@ export async function unlockDocuments(memberId: string, password: string) {
   if (!member) return { error: "Not found" };
 
   const isOwner = member.familyUnit.familyHeadUserId === user.id;
-  if (!isOwner && !member.docsSharedWhenLoggedIn) {
-    return { error: "These documents are not shared." };
+  let hasGrant = false;
+  if (!isOwner) {
+    const grant = await prisma.documentAccessGrant.findUnique({
+      where: { familyMemberId_grantedToUserId: { familyMemberId: memberId, grantedToUserId: user.id } },
+    });
+    hasGrant = !!grant;
+  }
+  if (!isOwner && !hasGrant) {
+    return { error: "You do not have access to these documents." };
   }
   if (!member.docsPasswordEnc) {
     return { error: "No password set for these documents yet." };

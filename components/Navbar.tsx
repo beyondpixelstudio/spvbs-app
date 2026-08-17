@@ -18,7 +18,7 @@ export default async function Navbar() {
       dbUser.email ||
       "Member";
 
-    navUser = { name, role: dbUser.role };
+    navUser = { name, role: dbUser.role, profilePictureUrl: dbUser.profilePictureUrl };
   }
 
   return <NavbarClient user={navUser} />;

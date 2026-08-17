@@ -20,7 +20,13 @@ export async function GET(req: NextRequest) {
         { villageTown: { contains: q, mode: "insensitive" } },
       ],
     },
-    select: { id: true, familyName: true, taluka: true, villageTown: true },
+    select: {
+      id: true,
+      familyName: true,
+      taluka: true,
+      villageTown: true,
+      familyHeadUser: { select: { profilePictureUrl: true } },
+    },
     take: 8,
   });
 

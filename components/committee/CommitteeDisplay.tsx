@@ -14,6 +14,8 @@ type Member = {
   designationText: string;
   taluka: string;
   village: string;
+  phone?: string;
+  profilePictureUrl?: string;
   order: number;
 };
 
@@ -24,7 +26,7 @@ const designationColor: Record<string, string> = {
   SECRETARY: "var(--color-primary)",
   JOINT_SECRETARY: "var(--color-primary)",
   CASHIER: "var(--color-extra-green)",
-  MEMBER: "var(--color-text-secondary)",
+  MEMBER: "var(--color-bg-secondary)",
 };
 
 const DESIGNATIONS = [
@@ -39,15 +41,28 @@ function MemberCard({ m }: { m: Member }) {
   const color = designationColor[m.designation] || "var(--color-primary)";
   return (
     <div className="bg-white rounded-[20px] border border-[#ece5d5] p-[22px] flex items-center gap-[16px]" style={{ boxShadow: "rgba(40, 63, 116, 0.08) 0px 6px 30px 0px" }}>
-      <div className="w-[56px] h-[56px] rounded-[18px] text-white flex items-center justify-center text-[22px] font-[family-name:var(--font-heading)] shrink-0" style={{ background: `linear-gradient(135deg, ${color}, ${color}dd)` }}>
-        {m.name.charAt(0).toUpperCase()}
-      </div>
+      {m.profilePictureUrl ? (
+        <img
+          src={m.profilePictureUrl}
+          alt={m.name}
+          className="w-[56px] h-[56px] rounded-[18px] object-cover shrink-0"
+        />
+      ) : (
+        <div className="w-[56px] h-[56px] rounded-[18px] text-white flex items-center justify-center text-[22px] font-[family-name:var(--font-heading)] shrink-0" style={{ background: color }}>
+          {m.name.charAt(0).toUpperCase()}
+        </div>
+      )}
       <div className="min-w-0">
         <div className="text-[17px] font-medium text-[var(--color-bg-secondary)] truncate">{m.name}</div>
         <div className="text-[13px] font-medium mt-[2px]" style={{ color }}>{m.designationText}</div>
         <div className="text-[13px] text-[var(--color-text-secondary)] mt-[2px]">
           {m.typeText}{m.taluka ? ` • ${m.taluka}` : ""}
         </div>
+        {m.phone && (
+          <div className="text-[13px] text-[var(--color-text)] mt-[4px] font-medium">
+            📞 {m.phone}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -56,9 +71,11 @@ function MemberCard({ m }: { m: Member }) {
 export default function CommitteeDisplay({
   members,
   typeOptions,
+  level,
 }: {
   members: Member[];
   typeOptions: TypeOption[];
+  level?: "CENTRAL" | "TALUKA";
 }) {
   const [typeFilter, setTypeFilter] = useState("ALL");
   const [talukaFilter, setTalukaFilter] = useState("ALL");
@@ -71,8 +88,8 @@ export default function CommitteeDisplay({
     return true;
   });
 
-  const central = filtered.filter((m) => m.level === "CENTRAL");
-  const taluka = filtered.filter((m) => m.level === "TALUKA");
+  const central = level && level !== "CENTRAL" ? [] : filtered.filter((m) => m.level === "CENTRAL");
+  const taluka = level && level !== "TALUKA" ? [] : filtered.filter((m) => m.level === "TALUKA");
 
   const selectClass = "w-full rounded-[14px] border border-[#ece5d5] bg-white px-[16px] py-[12px] text-[16px] text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] cursor-pointer";
   const labelClass = "text-[13px] tracking-[1px] uppercase text-[var(--color-text-secondary)] block mb-[8px]";
@@ -80,7 +97,8 @@ export default function CommitteeDisplay({
   return (
     <div>
       {/* Filters */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-[16px] mb-[30px]">
+      <div className={`grid grid-cols-1 gap-[16px] mb-[30px] ${level ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}>
+        {level !== "TALUKA" && (
         <div>
           <label className={labelClass}>Type</label>
           <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className={selectClass}>
@@ -88,6 +106,7 @@ export default function CommitteeDisplay({
             {typeOptions.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
           </select>
         </div>
+        )}
         <div>
           <label className={labelClass}>Designation</label>
           <select value={designationFilter} onChange={(e) => setDesignationFilter(e.target.value)} className={selectClass}>
@@ -95,6 +114,7 @@ export default function CommitteeDisplay({
             {DESIGNATIONS.map((d) => <option key={d.value} value={d.value}>{d.label}</option>)}
           </select>
         </div>
+        {level !== "CENTRAL" && (
         <div>
           <label className={labelClass}>Taluka</label>
           <select value={talukaFilter} onChange={(e) => setTalukaFilter(e.target.value)} className={selectClass}>
@@ -102,6 +122,7 @@ export default function CommitteeDisplay({
             {TALUKAS.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
         </div>
+        )}
       </div>
 
       {members.length === 0 ? (
@@ -116,12 +137,14 @@ export default function CommitteeDisplay({
         <div className="flex flex-col gap-[40px]">
           {central.length > 0 && (
             <div>
+              {!level && (
               <div className="flex items-center gap-[12px] mb-[18px]">
                 <span className="text-[14px] tracking-[2px] uppercase text-[var(--color-secondary)] font-medium">
                   Central Committee ({central.length})
                 </span>
                 <span className="flex-1 h-[1px] bg-[var(--color-border)]" />
               </div>
+              )}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[16px]">
                 {central.map((m) => <MemberCard key={m.id} m={m} />)}
               </div>
@@ -130,12 +153,14 @@ export default function CommitteeDisplay({
 
           {taluka.length > 0 && (
             <div>
+              {!level && (
               <div className="flex items-center gap-[12px] mb-[18px]">
                 <span className="text-[14px] tracking-[2px] uppercase text-[var(--color-primary)] font-medium">
                   Taluka Committee ({taluka.length})
                 </span>
                 <span className="flex-1 h-[1px] bg-[var(--color-border)]" />
               </div>
+              )}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[16px]">
                 {taluka.map((m) => <MemberCard key={m.id} m={m} />)}
               </div>

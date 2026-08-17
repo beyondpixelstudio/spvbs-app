@@ -32,6 +32,7 @@ export default async function AdminCommitteePage() {
       name: h.familyUnit!.familyName,
       taluka: h.familyUnit!.taluka || "",
       email: h.email || "",
+      profilePictureUrl: h.profilePictureUrl || "",
     }));
 
   const assignments = await prisma.committeeAssignment.findMany({
@@ -48,6 +49,7 @@ export default async function AdminCommitteePage() {
     type: typeLabel[a.type] || a.type,
     designation: designationLabel[a.designation] || a.designation,
     taluka: a.taluka || a.user.familyUnit?.taluka || "",
+    profilePictureUrl: a.user.profilePictureUrl || "",
   }));
 
   return (

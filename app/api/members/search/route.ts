@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
       fullName: true,
       relation: true,
       villageTown: true,
-      familyUnit: { select: { villageTown: true, taluka: true } },
+      familyUnit: { select: { villageTown: true, taluka: true, familyHeadUser: { select: { profilePictureUrl: true } } } },
     },
     take: 8,
     orderBy: { fullName: "asc" },
@@ -37,6 +37,7 @@ export async function GET(request: NextRequest) {
       m.villageTown || m.familyUnit?.villageTown
         ? `${m.villageTown || m.familyUnit?.villageTown}, ${m.familyUnit?.taluka || ""}`.replace(/, $/, "")
         : m.familyUnit?.taluka || "",
+    profilePictureUrl: m.relation === "Head" ? m.familyUnit?.familyHeadUser?.profilePictureUrl || null : null,
   }));
 
   return NextResponse.json({ results });

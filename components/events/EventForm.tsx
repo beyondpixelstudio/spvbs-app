@@ -12,7 +12,6 @@ type EventData = {
   dateTime: string;
   location: string;
   taluka: string;
-  rsvpCapacity: string;
 };
 
 export default function EventForm({
@@ -29,7 +28,6 @@ export default function EventForm({
     dateTime: event?.dateTime || "",
     location: event?.location || "",
     taluka: event?.taluka || "",
-    rsvpCapacity: event?.rsvpCapacity || "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -119,15 +117,6 @@ export default function EventForm({
               placeholder="e.g. Aska"
             />
           </div>
-          <Input
-            id="rsvpCapacity"
-            label="RSVP Capacity (optional)"
-            type="number"
-            value={form.rsvpCapacity}
-            onChange={(e) => update("rsvpCapacity", e.target.value)}
-            placeholder="Max attendees (leave blank for unlimited)"
-          />
-
           {error && (
             <p className="text-[14px] text-[var(--color-secondary)] bg-[var(--color-secondary)]/8 rounded-[12px] px-[14px] py-[10px]">
               {error}

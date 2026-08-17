@@ -7,6 +7,7 @@ type Result = {
   name: string;
   relation: string;
   location: string;
+  profilePictureUrl?: string | null;
 };
 
 export default function MemberAutocomplete({
@@ -94,9 +95,17 @@ export default function MemberAutocomplete({
                 onClick={() => selectResult(r)}
                 className="w-full flex items-center gap-[12px] px-[16px] py-[12px] hover:bg-[#faf8f3] transition-colors text-left cursor-pointer border-b border-[#f3eee2] last:border-b-0"
               >
+                  {r.profilePictureUrl ? (
+                    <img
+                      src={r.profilePictureUrl}
+                      alt={r.name}
+                      className="w-[38px] h-[38px] rounded-[12px] object-cover shrink-0"
+                    />
+                  ) : (
                 <div className="w-[38px] h-[38px] rounded-[12px] bg-gradient-to-br from-[var(--color-primary)] to-[#9a7835] text-white flex items-center justify-center text-[15px] font-[family-name:var(--font-heading)] shrink-0">
                   {r.name.charAt(0).toUpperCase()}
                 </div>
+                  )}
                 <div className="min-w-0">
                   <div className="text-[15px] text-[var(--color-bg-secondary)] font-medium truncate">
                     {r.name}

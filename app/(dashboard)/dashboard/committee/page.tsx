@@ -54,7 +54,11 @@ export default async function CommitteeTasksPage() {
     where,
     include: {
       submittedBy: {
-        include: { familyUnit: { select: { familyName: true, taluka: true, villageTown: true } } },
+        select: {
+          email: true,
+          profilePictureUrl: true,
+          familyUnit: { select: { familyName: true, taluka: true, villageTown: true } },
+        },
       },
     },
     orderBy: { createdAt: "desc" },
@@ -66,7 +70,6 @@ export default async function CommitteeTasksPage() {
   );
   const rawEvents = canManageEvents
     ? await prisma.event.findMany({
-        include: { _count: { select: { rsvps: true } } },
         orderBy: { dateTime: "desc" },
       })
     : [];
@@ -77,8 +80,6 @@ export default async function CommitteeTasksPage() {
     dateTime: e.dateTime.toISOString(),
     location: e.location,
     taluka: e.taluka,
-    rsvpCapacity: e.rsvpCapacity,
-    rsvpCount: e._count.rsvps,
   }));
 
   return (
@@ -130,6 +131,7 @@ export default async function CommitteeTasksPage() {
               submitterName={app.submittedBy?.familyUnit?.familyName || app.submittedBy?.email || "Unknown"}
               submitterTaluka={app.submittedBy?.familyUnit?.taluka || ""}
               submitterVillage={app.submittedBy?.familyUnit?.villageTown || ""}
+              submitterProfilePictureUrl={app.submittedBy?.profilePictureUrl}
               status={app.status}
               rejectionReason={app.rejectionReason}
               talukaApproved={app.talukaApproved}

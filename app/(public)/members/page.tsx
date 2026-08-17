@@ -72,9 +72,17 @@ export default async function DirectoryPage({
                   <span className="absolute top-0 left-0 h-[3px] w-0 bg-[var(--color-primary)] transition-all duration-300 group-hover:w-full" />
 
                   <div className="flex items-start gap-[16px]">
-                    <div className="w-[58px] h-[58px] rounded-[18px] bg-gradient-to-br from-[var(--color-primary)] to-[#9a7835] text-white flex items-center justify-center text-[24px] font-[family-name:var(--font-heading)] shrink-0">
-                      {family.familyName.charAt(0).toUpperCase()}
-                    </div>
+                    {family.familyHeadUser?.profilePictureUrl ? (
+                      <img
+                        src={family.familyHeadUser.profilePictureUrl}
+                        alt={family.familyName}
+                        className="w-[58px] h-[58px] rounded-[18px] object-cover shrink-0"
+                      />
+                    ) : (
+                      <div className="w-[58px] h-[58px] rounded-[18px] bg-gradient-to-br from-[var(--color-primary)] to-[#9a7835] text-white flex items-center justify-center text-[24px] font-[family-name:var(--font-heading)] shrink-0">
+                        {family.familyName.charAt(0).toUpperCase()}
+                      </div>
+                    )}
                     <div className="min-w-0 pt-[2px]">
                       <h4 className="!text-[19px] !leading-[1.25] text-[var(--color-bg-secondary)] truncate">
                         {family.familyName}

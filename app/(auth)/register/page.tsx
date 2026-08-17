@@ -13,6 +13,7 @@ import {
   CURRENT_STATUS_OPTIONS,
   BLOOD_GROUP_OPTIONS,
 } from "@/lib/constants";
+import { TALUKAS } from "@/lib/site-config";
 import { submitMembership } from "@/app/actions/membership";
 
 export default function RegisterPage() {
@@ -29,6 +30,11 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  // Step 1: profile picture (optional)
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string>("");
+  const [photoError, setPhotoError] = useState("");
+
   // Step 2: personal details
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState("");
@@ -40,6 +46,28 @@ export default function RegisterPage() {
   const [mobile, setMobile] = useState("");
   const [taluka, setTaluka] = useState("");
   const [villageTown, setVillageTown] = useState("");
+
+  function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setPhotoError("");
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 200 * 1024) {
+      setPhotoError("Image must be under 200KB.");
+      return;
+    }
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      setPhotoError("Only JPG, PNG, or WebP images are allowed.");
+      return;
+    }
+    setPhoto(file);
+    setPhotoPreview(URL.createObjectURL(file));
+  }
+
+  function removePhoto() {
+    setPhoto(null);
+    setPhotoPreview("");
+    setPhotoError("");
+  }
 
   function validateStep1(): boolean {
     setError("");
@@ -54,6 +82,9 @@ export default function RegisterPage() {
     setError("");
     if (!gender) { setError("Please select gender."); return false; }
     if (!dob) { setError("Date of birth is required."); return false; }
+    const dobDate = new Date(dob);
+    const age = (Date.now() - dobDate.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
+    if (age < 18) { setError("You must be at least 18 years old to register."); return false; }
     if (!maritalStatus) { setError("Please select marital status."); return false; }
     if (!occupation.trim()) { setError("Occupation is required."); return false; }
     if (!currentStatus) { setError("Please select current status."); return false; }
@@ -77,6 +108,7 @@ export default function RegisterPage() {
       fullName, email, password,
       gender, dob, maritalStatus, qualification, occupation,
       currentStatus, bloodGroup, mobile, taluka, villageTown,
+      photo,
     });
 
     setLoading(false);
@@ -133,6 +165,33 @@ export default function RegisterPage() {
           <Input id="email" label="Email *" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
           <Input id="password" label="Password *" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="At least 6 characters" />
           <Input id="confirmPassword" label="Confirm Password *" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Re-enter password" />
+
+          {/* Profile Picture (optional) */}
+          <div className="flex flex-col gap-[8px]">
+            <label className="text-[14px] font-medium text-[var(--color-text)]">Profile Picture (optional)</label>
+            <div className="flex items-center gap-[16px]">
+              <div className="w-[64px] h-[64px] rounded-full bg-[var(--color-border)] overflow-hidden shrink-0 flex items-center justify-center">
+                {photoPreview ? (
+                  <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-[26px] text-[var(--color-text-secondary)]">👤</span>
+                )}
+              </div>
+              <div className="flex flex-col gap-[6px]">
+                <label className="inline-flex items-center gap-[6px] text-[14px] text-[var(--color-primary)] font-medium cursor-pointer hover:opacity-80 w-fit">
+                  📎 {photo ? "Change photo" : "Choose photo"}
+                  <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handlePhotoChange} className="hidden" />
+                </label>
+                {photo && (
+                  <button type="button" onClick={removePhoto} className="text-[13px] text-[var(--color-secondary)] hover:opacity-80 cursor-pointer w-fit">
+                    Remove
+                  </button>
+                )}
+                <span className="text-[12px] text-[var(--color-text-secondary)]">JPG, PNG, or WebP. Max 200KB.</span>
+              </div>
+            </div>
+            {photoError && <p className="text-[13px] text-[var(--color-secondary)]">{photoError}</p>}
+          </div>
         </div>
       )}
 
@@ -147,7 +206,7 @@ export default function RegisterPage() {
           <Select id="currentStatus" label="Current Status *" options={CURRENT_STATUS_OPTIONS} value={currentStatus} onChange={(e) => setCurrentStatus(e.target.value)} />
           <Select id="bloodGroup" label="Blood Group" options={BLOOD_GROUP_OPTIONS} value={bloodGroup} onChange={(e) => setBloodGroup(e.target.value)} />
           <Input id="mobile" label="Mobile Number *" value={mobile} onChange={(e) => setMobile(e.target.value)} placeholder="10-digit mobile" />
-          <Input id="taluka" label="Taluka *" value={taluka} onChange={(e) => setTaluka(e.target.value)} placeholder="e.g. Aska" />
+          <Select id="taluka" label="Taluka *" options={TALUKAS.map((t) => ({ value: t, label: t }))} value={taluka} onChange={(e) => setTaluka(e.target.value)} />
           <Input id="villageTown" label="Village / Town *" value={villageTown} onChange={(e) => setVillageTown(e.target.value)} placeholder="e.g. Aska" />
         </div>
       )}
@@ -155,6 +214,11 @@ export default function RegisterPage() {
       {/* STEP 3 */}
       {step === 3 && (
         <div className="bg-[#faf8f3] border border-[#ece5d5] rounded-[16px] p-[20px] flex flex-col gap-[8px]">
+          {photoPreview && (
+            <div className="flex justify-center mb-[8px]">
+              <img src={photoPreview} alt="Profile" className="w-[64px] h-[64px] rounded-full object-cover border border-[#ece5d5]" />
+            </div>
+          )}
           {[
             ["Name", fullName], ["Email", email], ["Gender", gender], ["DOB", dob],
             ["Marital Status", maritalStatus], ["Qualification", qualification || "—"],

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 
-type Family = { id: string; familyName: string; taluka: string | null; villageTown: string | null };
+type Family = { id: string; familyName: string; taluka: string | null; villageTown: string | null; familyHeadUser?: { profilePictureUrl: string | null } | null };
 
 // Live-search for another family head (by name / taluka / village).
 export default function FamilySearch({
@@ -44,10 +44,23 @@ export default function FamilySearch({
       <div className="flex flex-col gap-[6px]">
         <label className="text-[14px] font-medium text-[var(--color-text)]">{label} *</label>
         <div className="flex items-center justify-between gap-[12px] bg-[#faf8f3] border border-[#ece5d5] rounded-[12px] px-[14px] py-[11px]">
-          <div className="min-w-0">
-            <div className="text-[15px] text-[var(--color-bg-secondary)] font-medium truncate">{selected.familyName}</div>
-            <div className="text-[12px] text-[var(--color-text-secondary)]">
-              {selected.taluka || ""}{selected.villageTown ? ` • ${selected.villageTown}` : ""}
+          <div className="flex items-center gap-[10px] min-w-0">
+            {selected.familyHeadUser?.profilePictureUrl ? (
+              <img
+                src={selected.familyHeadUser.profilePictureUrl}
+                alt={selected.familyName}
+                className="w-[36px] h-[36px] rounded-[10px] object-cover shrink-0"
+              />
+            ) : (
+              <div className="w-[36px] h-[36px] rounded-[10px] bg-gradient-to-br from-[var(--color-primary)] to-[#9a7835] text-white flex items-center justify-center text-[14px] font-[family-name:var(--font-heading)] shrink-0">
+                {selected.familyName.charAt(0).toUpperCase()}
+              </div>
+            )}
+            <div className="min-w-0">
+              <div className="text-[15px] text-[var(--color-bg-secondary)] font-medium truncate">{selected.familyName}</div>
+              <div className="text-[12px] text-[var(--color-text-secondary)]">
+                {selected.taluka || ""}{selected.villageTown ? ` • ${selected.villageTown}` : ""}
+              </div>
             </div>
           </div>
           <button type="button" onClick={onClear} className="text-[13px] text-[var(--color-secondary)] hover:opacity-80 cursor-pointer shrink-0">Change</button>
@@ -78,11 +91,24 @@ export default function FamilySearch({
                 key={f.id}
                 type="button"
                 onClick={() => onSelect(f)}
-                className="w-full text-left px-[16px] py-[11px] hover:bg-[#faf8f3] cursor-pointer border-b border-[#f3eee2] last:border-b-0"
+                className="w-full flex items-center gap-[10px] text-left px-[16px] py-[11px] hover:bg-[#faf8f3] cursor-pointer border-b border-[#f3eee2] last:border-b-0"
               >
-                <div className="text-[15px] text-[var(--color-bg-secondary)] font-medium">{f.familyName}</div>
-                <div className="text-[12px] text-[var(--color-text-secondary)]">
-                  {f.taluka || ""}{f.villageTown ? ` • ${f.villageTown}` : ""}
+                {f.familyHeadUser?.profilePictureUrl ? (
+                  <img
+                    src={f.familyHeadUser.profilePictureUrl}
+                    alt={f.familyName}
+                    className="w-[32px] h-[32px] rounded-[9px] object-cover shrink-0"
+                  />
+                ) : (
+                  <div className="w-[32px] h-[32px] rounded-[9px] bg-gradient-to-br from-[var(--color-primary)] to-[#9a7835] text-white flex items-center justify-center text-[13px] font-[family-name:var(--font-heading)] shrink-0">
+                    {f.familyName.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <div className="min-w-0">
+                  <div className="text-[15px] text-[var(--color-bg-secondary)] font-medium">{f.familyName}</div>
+                  <div className="text-[12px] text-[var(--color-text-secondary)]">
+                    {f.taluka || ""}{f.villageTown ? ` • ${f.villageTown}` : ""}
+                  </div>
                 </div>
               </button>
             ))

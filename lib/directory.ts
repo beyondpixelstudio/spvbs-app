@@ -42,6 +42,7 @@ export async function getDirectoryFamilies(opts?: {
         : {}),
     },
     include: {
+      familyHeadUser: { select: { profilePictureUrl: true } },
       members: {
         where: { visibility: { in: visibilities } },
         orderBy: { relation: "asc" },
@@ -57,6 +58,7 @@ export async function getDirectoryFamilies(opts?: {
 // Fetch a single family's public profile (respecting visibility)
 export async function getFamilyProfile(familyId: string) {
   const visibilities = await allowedVisibilities();
+  const viewer = await getCurrentUser();
 
   const family = await prisma.familyUnit.findFirst({
     where: {
@@ -64,6 +66,7 @@ export async function getFamilyProfile(familyId: string) {
       familyHeadUser: { status: "APPROVED" },
     },
     include: {
+      familyHeadUser: { select: { profilePictureUrl: true } },
       members: {
         where: { visibility: { in: visibilities } },
         include: {
@@ -73,7 +76,26 @@ export async function getFamilyProfile(familyId: string) {
     },
   });
 
-  return family;
+  if (!family) return family;
+
+  const isOwner = viewer && family.familyHeadUserId === viewer.id;
+
+  let grantedMemberIds = new Set<string>();
+  if (viewer && !isOwner) {
+    const grants = await prisma.documentAccessGrant.findMany({
+      where: { grantedToUserId: viewer.id, familyMemberId: { in: family.members.map((m) => m.id) } },
+      select: { familyMemberId: true },
+    });
+    grantedMemberIds = new Set(grants.map((g) => g.familyMemberId));
+  }
+
+  return {
+    ...family,
+    members: family.members.map((m) => ({
+      ...m,
+      hasDocAccess: !!isOwner || grantedMemberIds.has(m.id),
+    })),
+  };
 }
 
 // Distinct taluka list for the filter dropdown

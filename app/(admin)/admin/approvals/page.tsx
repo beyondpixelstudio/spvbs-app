@@ -46,6 +46,7 @@ export default async function ApprovalsPage() {
           location,
           mobile,
           memberCount: family?._count.members ?? 0,
+          profilePictureUrl: u.profilePictureUrl,
         };
       })
     );
@@ -91,6 +92,7 @@ export default async function ApprovalsPage() {
                 location={item.location}
                 mobile={item.mobile}
                 memberCount={item.memberCount}
+                profilePictureUrl={item.profilePictureUrl}
                 variant="pending"
               />
             ))}
@@ -117,6 +119,7 @@ export default async function ApprovalsPage() {
                 location={item.location}
                 mobile={item.mobile}
                 memberCount={item.memberCount}
+                profilePictureUrl={item.profilePictureUrl}
                 variant="suspended"
               />
             ))}

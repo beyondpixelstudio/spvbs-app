@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/lib/auth";
 import Link from "next/link";
 import MarriageForm from "@/components/marriage/MarriageForm";
+import PendingLock from "@/components/PendingLock";
 
 export default async function MarriagePage() {
   const user = await getCurrentUser();
@@ -28,6 +29,10 @@ export default async function MarriagePage() {
             <Link href="/login" className="inline-flex items-center justify-center bg-[var(--color-primary)] text-white font-medium rounded-[40px] px-[28px] py-[12px] text-[16px] hover:opacity-90">
               Login to continue
             </Link>
+          </div>
+        ) : user.status === "PENDING" ? (
+          <div className="max-w-[520px] mx-auto">
+            <PendingLock feature="Marriage & Negotiation" />
           </div>
         ) : (
           <MarriageForm />

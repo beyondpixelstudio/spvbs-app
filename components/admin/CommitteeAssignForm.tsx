@@ -5,7 +5,7 @@ import Button from "@/components/Button";
 import { assignCommittee } from "@/app/actions/committee";
 import { TALUKAS } from "@/lib/site-config";
 
-type Candidate = { userId: string; name: string; taluka: string; email: string };
+type Candidate = { userId: string; name: string; taluka: string; email: string; profilePictureUrl?: string };
 
 const LEVELS = [
   { value: "TALUKA", label: "Taluka" },
@@ -91,9 +91,17 @@ export default function CommitteeAssignForm({ candidates }: { candidates: Candid
                   onClick={() => { setSelected(c); setTaluka(c.taluka); setQuery(""); }}
                   className="w-full flex items-center gap-[12px] px-[16px] py-[12px] hover:bg-[#faf8f3] text-left cursor-pointer border-b border-[#f3eee2] last:border-b-0"
                 >
-                  <div className="w-[38px] h-[38px] rounded-[12px] bg-gradient-to-br from-[var(--color-primary)] to-[#9a7835] text-white flex items-center justify-center text-[15px] font-[family-name:var(--font-heading)] shrink-0">
-                    {c.name.charAt(0).toUpperCase()}
-                  </div>
+                  {c.profilePictureUrl ? (
+                    <img
+                      src={c.profilePictureUrl}
+                      alt={c.name}
+                      className="w-[38px] h-[38px] rounded-[12px] object-cover shrink-0"
+                    />
+                  ) : (
+                    <div className="w-[38px] h-[38px] rounded-[12px] bg-gradient-to-br from-[var(--color-primary)] to-[#9a7835] text-white flex items-center justify-center text-[15px] font-[family-name:var(--font-heading)] shrink-0">
+                      {c.name.charAt(0).toUpperCase()}
+                    </div>
+                  )}
                   <div className="min-w-0">
                     <div className="text-[15px] text-[var(--color-bg-secondary)] font-medium truncate">{c.name}</div>
                     <div className="text-[13px] text-[var(--color-text-secondary)] truncate">{c.taluka}{c.email ? ` • ${c.email}` : ""}</div>

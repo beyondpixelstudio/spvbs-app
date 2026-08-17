@@ -10,6 +10,7 @@ type Props = {
   location: string;
   memberCount: number;
   mobile?: string;
+  profilePictureUrl?: string | null;
   variant: "pending" | "suspended";
 };
 
@@ -20,6 +21,7 @@ export default function ApprovalCard({
   location,
   memberCount,
   mobile,
+  profilePictureUrl,
   variant,
 }: Props) {
   const [loading, setLoading] = useState<string | null>(null);
@@ -38,9 +40,17 @@ export default function ApprovalCard({
       style={{ boxShadow: "var(--shadow-elevated)" }}
     >
       <div className="flex items-center gap-[16px] min-w-0">
-        <div className="w-[50px] h-[50px] rounded-[16px] bg-gradient-to-br from-[var(--color-primary)] to-[#9a7835] text-white flex items-center justify-center text-[20px] font-[family-name:var(--font-heading)] shrink-0">
-          {familyName.charAt(0).toUpperCase()}
-        </div>
+        {profilePictureUrl ? (
+          <img
+            src={profilePictureUrl}
+            alt={familyName}
+            className="w-[50px] h-[50px] rounded-[16px] object-cover shrink-0"
+          />
+        ) : (
+          <div className="w-[50px] h-[50px] rounded-[16px] bg-gradient-to-br from-[var(--color-primary)] to-[#9a7835] text-white flex items-center justify-center text-[20px] font-[family-name:var(--font-heading)] shrink-0">
+            {familyName.charAt(0).toUpperCase()}
+          </div>
+        )}
         <div className="min-w-0">
           <div className="text-[17px] font-medium text-[var(--color-bg-secondary)] truncate">
             {familyName}

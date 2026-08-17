@@ -41,7 +41,11 @@ export default async function AdminMarriagePage() {
     where,
     include: {
       submittedBy: {
-        include: { familyUnit: { select: { familyName: true, taluka: true, villageTown: true } } },
+        select: {
+          email: true,
+          profilePictureUrl: true,
+          familyUnit: { select: { familyName: true, taluka: true, villageTown: true } },
+        },
       },
     },
     orderBy: { createdAt: "desc" },
@@ -71,6 +75,7 @@ export default async function AdminMarriagePage() {
               submitterName={app.submittedBy?.familyUnit?.familyName || app.submittedBy?.email || "Unknown"}
               submitterTaluka={app.submittedBy?.familyUnit?.taluka || ""}
               submitterVillage={app.submittedBy?.familyUnit?.villageTown || ""}
+              submitterProfilePictureUrl={app.submittedBy?.profilePictureUrl}
               status={app.status}
               rejectionReason={app.rejectionReason}
               talukaApproved={app.talukaApproved}
